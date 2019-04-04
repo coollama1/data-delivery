@@ -19,7 +19,55 @@ public class DataHandler{
             //if tables dont exist, create tables
             //... put in the code here ...
 
-            
+            String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery";
+            String useDatabase = "USE Delivery";
+
+            String createUserTable = "CREATE TABLE IF NOT EXISTS User("
+            + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
+            + "password VARCHAR(128),"
+            + "name VARCHAR(128),"
+            + "address VARCHAR(128));";
+
+            String createMailTable = "CREATE TABLE IF NOT EXISTS Mail("
+            + "id INT PRIMARY KEY NOT NULL,"
+            + "user VARCHAR(128),"
+            + "sender VARCHAR(128),"
+            + "receiver VARCHAR(128),"
+            + "mailtype VARCHAR(128),"
+            + "shippingDate VARCHAR(128),"
+            + "deliveryDate VARCHAR(128),"
+            + "currentStatus VARCHAR(128),"
+            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE);"; 
+
+            String createPackagelTable = "CREATE TABLE IF NOT EXISTS Package("
+            + "id INT PRIMARY KEY NOT NULL,"
+            + "user VARCHAR(128),"
+            + "sender VARCHAR(128),"
+            + "receiver VARCHAR(128),"
+            + "mailtype VARCHAR(128),"
+            + "shippingDate VARCHAR(128),"
+            + "deliveryDate VARCHAR(128),"
+            + "currentStatus VARCHAR(128));";
+
+            String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
+            + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
+            + "password VARCHAR(128));"
+
+            String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
+            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
+            + "description VARCHAR(128));";
+
+            String createPostOfficeTable = "CREATE TABLE IF NOT EXISTS PostOffice("
+            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
+            + "address VARCHAR(128));"
+
+            statement.executeUpdate(createDatabase);
+            statement.executeUpdate(useDatabase);
+            statement.executeUpdate(createUserTable);
+            statement.executeUpdate(createMailTable);
+            statement.executeUpdate(createPackagelTable);
+            statement.executeUpdate(createMailTable);
+            statement.executeUpdate(createPostOfficeTable);
 
         }catch(Exception expt){
             expt.printStackTrace();
@@ -28,11 +76,11 @@ public class DataHandler{
     }
 
     //[name,address]
-    public static String [] getPersonlInfo(String userID){
+    public static String [] getPersonlInfo(String username){
         return null;
     }
 
-    public static ArrayList<String> getListOfItems(String userID){
+    public static ArrayList<String> getListOfMail(String username){
         return null;
     }
 
