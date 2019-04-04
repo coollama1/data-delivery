@@ -22,6 +22,8 @@ public class DataHandler{
             //if tables dont exist, create tables
             //... put in the code here ...
 
+            
+
         }catch(Exception expt){
             expt.printStackTrace();
         }

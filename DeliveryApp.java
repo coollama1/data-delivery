@@ -8,7 +8,7 @@ public class DeliveryApp extends Application{
     }
 
     public void start(Stage stage){
-
+        DataHandler.closeEverything();
         stage.show();
     }   
 }
