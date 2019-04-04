@@ -42,13 +42,14 @@ public class DeliveryApp extends Application{
     	layout.add(pwTextField, 1, 2);
     	
     	Button loginBtn = new Button("Login");
-    	HBox lBtn = new HBox(10);
-    	lBtn.setAlignment(Pos.BOTTOM_LEFT);
+    	HBox lBtn = new HBox(5);
+    	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
-    	layout.add(lBtn, 1, 4);
+    	layout.add(lBtn, 0, 4);
+    	
     	
     	Button signUpBtn = new Button("Sign Up");
-    	HBox sBtn = new HBox(10);
+    	HBox sBtn = new HBox(5);
     	sBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	sBtn.getChildren().add(signUpBtn);
     	layout.add(sBtn, 1, 4);
