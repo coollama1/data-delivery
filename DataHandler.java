@@ -9,12 +9,9 @@ public class DataHandler{
     static{
         //make a connection when class is loaded
         try{
-            String driver = "org.mariadb.jdbc.Driver";
-            String host = "jdbc:mariadb://localhost:3306/DB";//try not to specify which database
+            String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
             String password = "209539352";
-            
-            Class.forName(driver);//this line may not be necessary
             
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
