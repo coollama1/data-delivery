@@ -3,11 +3,28 @@ import java.util.*;
 
 public class DataHandler{
 
-    private Connection connection;
-    private Statement statement;
+    private static Connection connection;
+    private static Statement statement;
 
     static{
+        //make a connection when class is loaded
+        try{
+            String driver = "org.mariadb.jdbc.Driver";
+            String host = "jdbc:mariadb://localhost:3306/DB";//try not to specify which database
+            String user = "root";
+            String password = "209539352";
+            
+            Class.forName(driver);//this line may not be necessary
+            
+            connection = DriverManager.getConnection(host,user,password);
+            statement = connection.createStatement();
 
+            //if tables dont exist, create tables
+            //... put in the code here ...
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
 
     }
 
@@ -52,6 +69,18 @@ public class DataHandler{
     //true if item is added, false if user already has item on their account
     public static boolean addItemForUser(String userID, String itemID){
         return false;
+    }
+
+    public static void closeEverything(){
+        try{
+            if(connection!= null)
+                connection.close();
+            if(connection!=null)
+                statement.close();
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
     }
 
 }
