@@ -12,9 +12,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
 public class DeliveryApp extends Application{
-	
-	Scene signUpScene;
-	Scene scene1;
     
     public static void main(String [] args){
     	
@@ -22,49 +19,46 @@ public class DeliveryApp extends Application{
     }
 
     public void start(Stage stage){
-    	stage.setTitle("Data Deliverers");
+    	stage.setTitle("Data Deliverers Login");
     	
-    	GridPane loginScene = new GridPane();
-    	loginScene.setAlignment(Pos.BASELINE_CENTER);
-    	loginScene.setHgap(10);
-    	loginScene.setVgap(10);
-    	loginScene.setPadding(new Insets(25, 25, 25, 25));
+    	GridPane layout = new GridPane();
+    	layout.setAlignment(Pos.BASELINE_CENTER);
+    	layout.setHgap(10);
+    	layout.setVgap(10);
+    	layout.setPadding(new Insets(25, 25, 25, 25));
     	
+
     	Text scenetitle = new Text("Welcome to Data Deliverers");
     	scenetitle.setFont(Font.font("Impact",25));
-    	loginScene.add(scenetitle, 0, 0, 2, 1);
+    	layout.add(scenetitle, 0, 0, 2, 1);
     	
-    	Label userName = new Label("Username:");
-    	loginScene.add(userName, 0, 1);
+    	Label userName = new Label("User Name:");
+    	layout.add(userName, 0, 1);
     	TextField userTextField = new TextField();
-    	loginScene.add(userTextField,1,1);
+    	layout.add(userTextField,1,1);
     	
     	Label pw = new Label("Password:");
-    	loginScene.add(pw, 0, 2);
+    	layout.add(pw, 0, 2);
     	TextField pwTextField = new TextField();
-    	loginScene.add(pwTextField, 1, 2);
+    	layout.add(pwTextField, 1, 2);
     	
     	Button loginBtn = new Button("Login");
     	HBox lBtn = new HBox(5);
     	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
-    	loginScene.add(lBtn, 1, 4);
-    	loginBtn.setOnAction(e -> stage.setScene(scene1));
+    	layout.add(lBtn, 0, 4);
+    	
     	
     	Button signUpBtn = new Button("Sign Up");
     	HBox sBtn = new HBox(5);
     	sBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	sBtn.getChildren().add(signUpBtn);
-    	loginScene.add(sBtn, 0, 4);
-    	signUpBtn.setOnAction(e -> stage.setScene(signUpScene));
+    	layout.add(sBtn, 1, 4);
     	
     	
-    	
-    	Scene scene = new Scene(loginScene, 400, 250);
-    	
+    	Scene scene = new Scene(layout, 350, 250);
     	stage.setScene(scene);
     	
         stage.show();
     }   
-    
 }
