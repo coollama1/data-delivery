@@ -28,43 +28,33 @@ public class DataHandler{
             + "name VARCHAR(128),"
             + "address VARCHAR(128));";
 
-            String createPackagelTable = "CREATE TABLE IF NOT EXISTS Package("
-            + "id INT PRIMARY KEY NOT NULL,"
-            + "sender VARCHAR(128),"
-            + "receiver VARCHAR(128),"
-            + "mailtype VARCHAR(128),"
-            + "shippingDate VARCHAR(128),"
-            + "deliveryDate VARCHAR(128),"
-            + "currentStatus VARCHAR(128),"
-            + "FOREIGN KEY(receiver) REFERENCES User(address) ON DELETE CASCADE ON UPDATE CASCADE);"; 
-
-            String createItemTable = "CREATE TABLE IF NOT EXISTS Item("
-            + "name VARCHAR(128),"
-            + "id INT PRIMARY KEY NOT NULL,"
+            String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
+            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "description VARCHAR(128));";
 
-            String createPackageItemsTable = "CREATE TABLE IF NOT EXISTS PackageItems("
-            + ""
+            String createPackageTable = "CREATE TABLE IF NOT EXISTS Package("
+            + "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+            + "items VARCHAR(128),"
+            + "sender VARCHAR(128),"
+            + "user VARCHAR(128),"
+            + "mailtype VARCHAR(128),"
+            + "shippingDate DATE,"
+            + "deliveryDate DATE,"
+            + "currentStatus VARCHAR(128),"
+            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE"
+            + "FOREIGN KEY(mailtype) REFERENCES Mailtype(name) ON UPDATE CASCADE);"; 
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
 
-            String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
-            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
-            + "description VARCHAR(128));";
-
-            String createPostOfficeTable = "CREATE TABLE IF NOT EXISTS PostOffice("
-            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
-            + "address VARCHAR(128));";
-
             statement.executeUpdate(createDatabase);
             statement.executeUpdate(useDatabase);
             statement.executeUpdate(createUserTable);
-            statement.executeUpdate(createPackagelTable);
-            statement.executeUpdate(createMailTable);
-            statement.executeUpdate(createPostOfficeTable);
+            statement.executeUpdate(createPackageTable);
+            statement.executeUpdate(createAdminTable);
+            statement.executeUpdate(createMailtypeTable);
 
         }catch(Exception expt){
             expt.printStackTrace();
