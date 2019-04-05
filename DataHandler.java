@@ -23,10 +23,11 @@ public class DataHandler{
 
             String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
             + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
-            + "description VARCHAR(128));";
+            + "description VARCHAR(1280));";
 
             String createPackageTable = "CREATE TABLE IF NOT EXISTS Package("
-            + "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
+            + "id INT AUTO_INCREMENT PRIMARY KEY,"
+            + "name VARCHAR(128),"
             + "items VARCHAR(128),"
             + "sender VARCHAR(128),"
             + "user VARCHAR(128) NOT NULL,"
@@ -42,6 +43,15 @@ public class DataHandler{
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
 
+            String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=12345678;";
+
+            String insertStandardMail = "INSERT IGNORE INTO Mailtype VALUES(\"Standard Mail\", \"Standard Mail is less expensive but it takes a little while to get anywhere. Anything can be shipped with parcel post.\");";
+            String insertExpressMail = "INSERT IGNORE INTO Mailtype VALUES(\"Express Mail\", \"Express mail is not frequently used because it is more expensive but may be used for urgent deliveries. This option offers overnight and flat rate envelopes.\");";
+            String insertFirstClassMail = "INSERT IGNORE INTO Mailtype VALUES(\"First Class Mail\", \"First class mail is an inexpensive way to send any item that weighs 13 ounces or less. This includes mail such as greeting cards and regular stamped mail.\");";
+            String insertPriorityMail = "INSERT IGNORE INTO Mailtype VALUES(\"Priority Mail\", \"The starting rate for Priority mail is no less than five dollars. Any item can be shipped this way to ensure fast delivery, generally within 2-3 days.\");";
+            
+            String insertAdmin = "INSERT IGNORE INTO ADMIN VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
+
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
 
@@ -54,8 +64,13 @@ public class DataHandler{
             statement.executeUpdate(createAdminTable);
             statement.executeUpdate(createMailtypeTable);
             statement.executeUpdate(createPackageTable);
+            statement.executeUpdate(alterPackageTable);
+            statement.executeUpdate(insertStandardMail);
+            statement.executeUpdate(insertExpressMail);
+            statement.executeUpdate(insertFirstClassMail);
+            statement.executeUpdate(insertPriorityMail);
+            statement.executeUpdate(insertAdmin);
             
-
         }catch(Exception expt){
             expt.printStackTrace();
         }
@@ -67,7 +82,11 @@ public class DataHandler{
         return null;
     }
 
-    public static ArrayList<String> getListOfMail(String username){
+    public static void createNewUser(String username, String password, String name, String address){
+        
+    }
+
+    public static ArrayList<String> getListOffPackages(String username){
         return null;
     }
 
