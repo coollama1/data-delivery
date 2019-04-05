@@ -78,7 +78,7 @@ public class DataHandler{
     }
 
     //[name,address]
-    public static String [] getPersonlInfo(String username){
+    public static String [] getPersonalInfo(String username){
             String [] personalInfo = {"",""};
             
             try{

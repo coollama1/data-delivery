@@ -14,7 +14,7 @@ import javafx.scene.text.Font;
 public class DeliveryApp extends Application{
 	
 	Stage window;
-	Scene signUpScene,loginScene,scene1;
+	Scene signUpScene,loginScene,scene1,changeInfoScene;
     
     public static void main(String [] args){
     	
@@ -59,8 +59,6 @@ public class DeliveryApp extends Application{
     	sBtn.getChildren().add(signUpBtn);
     	grid1.add(sBtn, 0, 4);
     	signUpBtn.setOnAction(e -> window.setScene(signUpScene));
-    	
-    	
     	
     	GridPane grid2 = new GridPane();
     	grid2.setAlignment(Pos.BASELINE_CENTER);
@@ -122,9 +120,55 @@ public class DeliveryApp extends Application{
     	grid2.add(retBtn, 0, 11);
     	returnBtn.setOnAction(e -> window.setScene(loginScene));
     	
-    	
+    	Button editPersonalInfoBtn = new Button("Edit Personal Info");
+    	HBox editBtn = new HBox(5);
+    	//editBtn.setAlignment();
+        //editBtn.getChildren().add(editPersonalInfoBtn);
+        //grid3.add();
+        //editPersonalInfoBtn.setOnAction(e -> window.setScene(scene3));
+
+        GridPane grid3 = new GridPane();
+        grid3.setAlignment(Pos.BASELINE_CENTER);
+        grid3.setHgap(10);
+        grid3.setVgap(10);
+        grid3.setPadding(new Insets(25, 25, 25, 25));
+
+        Text changeInfoTitle = new Text("Change Personal Info");
+        signUpTitle.setFont(Font.font("Impact",25));
+        grid3.add(changeInfoTitle,0,0);
+
+        Label newFirstName = new Label("First Name:");
+        grid3.add(newFirstName, 0, 1);
+        TextField newFTextField = new TextField();
+        grid3.add(newFTextField,0,2);
+
+        Label newLastName = new Label("Last Name:");
+        grid3.add(newLastName, 0, 3);
+        TextField newLTextField = new TextField();
+        grid3.add(newLTextField, 0, 4);
+
+        Label changeAddress = new Label("Address:");
+        grid3.add(changeAddress,0,5);
+        TextField newAddressField = new TextField();
+        grid3.add(newAddressField,0,6);
+
+        Button saveBtn = new Button("Save");
+        HBox sveBtn = new HBox(5);
+        //saveBtn.setAlignment();
+        sveBtn.getChildren().add(saveBtn);
+        //grid3.add(sveBtn);
+        //saveBtn.setOnAction(e -> )
+
+        Button cancelBtn = new Button("Cancel");
+        HBox cnclBtn = new HBox(5);
+        //cnclBtn.setAlignment();
+        cnclBtn.getChildren().add(cancelBtn);
+        //grid3.add(retBtn);
+        cancelBtn.setOnAction(e -> window.setScene(loginScene));
+
     	loginScene = new Scene(grid1, 400, 250);
     	signUpScene = new Scene(grid2,350,450);
+    	//changeInfoScene = new Scene(grid3,350,350);
     	
     	stage.setScene(loginScene);
     	
