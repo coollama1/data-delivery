@@ -51,7 +51,13 @@ public class DeliveryApp extends Application{
     	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
     	grid1.add(lBtn, 1, 4);
-    	loginBtn.setOnAction(e -> stage.setScene(scene1));
+    	loginBtn.setOnAction(e -> {
+    		String checkUser = userTextField.getText();
+    		String checkPW = pwTextField.getText();
+    		System.out.println(checkUser);
+    		System.out.println(checkPW);
+    		//stage.setScene(scene1)
+    		});
     	
     	Button signUpBtn = new Button("Sign Up");
     	HBox sBtn = new HBox(5);
