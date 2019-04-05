@@ -10,6 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.event.ActionEvent;
 
 public class DeliveryApp extends Application{
     
@@ -45,19 +46,19 @@ public class DeliveryApp extends Application{
     	HBox lBtn = new HBox(5);
     	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
-    	layout.add(lBtn, 0, 4);
-    	
+    	layout.add(lBtn, 1, 4);
     	
     	Button signUpBtn = new Button("Sign Up");
     	HBox sBtn = new HBox(5);
     	sBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	sBtn.getChildren().add(signUpBtn);
-    	layout.add(sBtn, 1, 4);
+    	layout.add(sBtn, 0, 4);
     	
     	
-    	Scene scene = new Scene(layout, 350, 250);
+    	Scene scene = new Scene(layout, 400, 250);
     	stage.setScene(scene);
     	
         stage.show();
     }   
+    
 }
