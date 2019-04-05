@@ -101,7 +101,7 @@ public class DeliveryApp extends Application{
     	HBox creBtn = new HBox(5);
     	creBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	creBtn.getChildren().add(createBtn);
-    	grid2.add(creBtn, 0, 11);
+    	grid2.add(creBtn, 1, 11);
     	createBtn.setOnAction(e -> {
     		String tempUserName = newUserTextField.getText();
     		String tempPW = newPWTextField.getText();
@@ -117,14 +117,14 @@ public class DeliveryApp extends Application{
     	
     	Button returnBtn = new Button("Back");
     	HBox retBtn = new HBox(5);
-    	retBtn.setAlignment(Pos.TOP_RIGHT);
+    	retBtn.setAlignment(Pos.BOTTOM_LEFT);
     	retBtn.getChildren().add(returnBtn);
-    	grid2.add(retBtn, 0, 0);
+    	grid2.add(retBtn, 0, 11);
     	returnBtn.setOnAction(e -> window.setScene(loginScene));
     	
     	
     	loginScene = new Scene(grid1, 400, 250);
-    	signUpScene = new Scene(grid2,300,450);
+    	signUpScene = new Scene(grid2,350,450);
     	
     	stage.setScene(loginScene);
     	
