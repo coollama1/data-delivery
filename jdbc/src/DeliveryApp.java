@@ -92,16 +92,39 @@ public class DeliveryApp extends Application{
     	TextField lNameTextField = new TextField();
     	grid2.add(lNameTextField, 0, 8);
     	
+    	Label newAddress = new Label("Address");
+    	grid2.add(newAddress, 0, 9);
+    	TextField newAddressTextField = new TextField();
+    	grid2.add(newAddressTextField, 0, 10);
+    	
     	Button createBtn = new Button("Create");
     	HBox creBtn = new HBox(5);
     	creBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	creBtn.getChildren().add(createBtn);
-    	grid2.add(creBtn, 0, 9);
+    	grid2.add(creBtn, 0, 11);
+    	createBtn.setOnAction(e -> {
+    		String tempUserName = newUserTextField.getText();
+    		String tempPW = newPWTextField.getText();
+    		String tempFName = fNameTextField.getText();
+    		String tempLName = lNameTextField.getText();
+    		String tempAddress = newAddressTextField.getText();
+    		System.out.println(tempUserName);
+    		System.out.println(tempPW);
+    		System.out.println(tempFName);
+    		System.out.println(tempLName);
+    		System.out.println(tempAddress);
+    		});
     	
+    	Button returnBtn = new Button("Back");
+    	HBox retBtn = new HBox(5);
+    	retBtn.setAlignment(Pos.TOP_RIGHT);
+    	retBtn.getChildren().add(returnBtn);
+    	grid2.add(retBtn, 0, 0);
+    	returnBtn.setOnAction(e -> window.setScene(loginScene));
     	
     	
     	loginScene = new Scene(grid1, 400, 250);
-    	signUpScene = new Scene(grid2,350,350);
+    	signUpScene = new Scene(grid2,300,450);
     	
     	stage.setScene(loginScene);
     	
