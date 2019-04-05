@@ -13,6 +13,8 @@ public class DataHandler{
             String user = "root";
             String password = "209539352";
             
+            String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
+
             String createUserTable = "CREATE TABLE IF NOT EXISTS User("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
@@ -51,6 +53,11 @@ public class DataHandler{
             String insertAdmin = "INSERT IGNORE INTO ADMIN VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
 
             connection = DriverManager.getConnection(host,user,password);
+            statement = connection.createStatement();
+
+            statement.executeUpdate(createDatabase);
+
+            connection = DriverManager.getConnection(host+"Delivery",user,password);
             statement = connection.createStatement();
 
             statement.executeUpdate(createUserTable);
