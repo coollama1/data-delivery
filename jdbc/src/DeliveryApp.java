@@ -12,6 +12,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 
 public class DeliveryApp extends Application{
+	
+	Stage window;
+	Scene signUpScene,loginScene,scene1;
     
     public static void main(String [] args){
     	
@@ -19,45 +22,90 @@ public class DeliveryApp extends Application{
     }
 
     public void start(Stage stage){
-    	stage.setTitle("Data Deliverers Login");
+    	window = stage;
+    	stage.setTitle("Data Deliverers");
     	
-    	GridPane layout = new GridPane();
-    	layout.setAlignment(Pos.BASELINE_CENTER);
-    	layout.setHgap(10);
-    	layout.setVgap(10);
-    	layout.setPadding(new Insets(25, 25, 25, 25));
+    	GridPane grid1 = new GridPane();
+    	grid1.setAlignment(Pos.BASELINE_CENTER);
+    	grid1.setHgap(10);
+    	grid1.setVgap(10);
+    	grid1.setPadding(new Insets(25, 25, 25, 25));
     	
-
+    	
     	Text scenetitle = new Text("Welcome to Data Deliverers");
     	scenetitle.setFont(Font.font("Impact",25));
-    	layout.add(scenetitle, 0, 0, 2, 1);
+    	grid1.add(scenetitle, 0, 0, 2, 1);
     	
-    	Label userName = new Label("User Name:");
-    	layout.add(userName, 0, 1);
+    	Label userName = new Label("Username:");
+    	grid1.add(userName, 0, 1);
     	TextField userTextField = new TextField();
-    	layout.add(userTextField,1,1);
+    	grid1.add(userTextField,1,1);
     	
     	Label pw = new Label("Password:");
-    	layout.add(pw, 0, 2);
+    	grid1.add(pw, 0, 2);
     	TextField pwTextField = new TextField();
-    	layout.add(pwTextField, 1, 2);
+    	grid1.add(pwTextField, 1, 2);
     	
     	Button loginBtn = new Button("Login");
     	HBox lBtn = new HBox(5);
     	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
-    	layout.add(lBtn, 0, 4);
-    	
+    	grid1.add(lBtn, 1, 4);
+    	loginBtn.setOnAction(e -> stage.setScene(scene1));
     	
     	Button signUpBtn = new Button("Sign Up");
     	HBox sBtn = new HBox(5);
     	sBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	sBtn.getChildren().add(signUpBtn);
-    	layout.add(sBtn, 1, 4);
+    	grid1.add(sBtn, 0, 4);
+    	signUpBtn.setOnAction(e -> window.setScene(signUpScene));
     	
-    	Scene scene = new Scene(layout, 350, 250);
-    	stage.setScene(scene);
+    	
+    	
+    	GridPane grid2 = new GridPane();
+    	grid2.setAlignment(Pos.BASELINE_CENTER);
+    	grid2.setHgap(8);
+    	grid2.setVgap(8);
+    	grid2.setPadding(new Insets(25, 25, 25, 25));
+    	
+    	Text signUpTitle = new Text("Sign Up");
+    	signUpTitle.setFont(Font.font("Impact",25));
+    	grid2.add(signUpTitle,0,0);
+    	
+    	Label newUserName = new Label("Username");
+    	grid2.add(newUserName, 0, 1);
+    	TextField newUserTextField = new TextField();
+    	grid2.add(newUserTextField,0,2);
+    	
+    	Label newPW = new Label("Password");
+    	grid2.add(newPW, 0, 3);
+    	TextField newPWTextField = new TextField();
+    	grid2.add(newPWTextField,0,4);
+    	
+    	Label fName = new Label("First Name");
+    	grid2.add(fName, 0, 5);
+    	TextField fNameTextField = new TextField();
+    	grid2.add(fNameTextField, 0, 6);
+    	
+    	Label lName = new Label("Last Name");
+    	grid2.add(lName, 0, 7);
+    	TextField lNameTextField = new TextField();
+    	grid2.add(lNameTextField, 0, 8);
+    	
+    	Button createBtn = new Button("Create");
+    	HBox creBtn = new HBox(5);
+    	creBtn.setAlignment(Pos.BOTTOM_RIGHT);
+    	creBtn.getChildren().add(createBtn);
+    	grid2.add(creBtn, 0, 9);
+    	
+    	
+    	
+    	loginScene = new Scene(grid1, 400, 250);
+    	signUpScene = new Scene(grid2,350,350);
+    	
+    	stage.setScene(loginScene);
     	
         stage.show();
     }   
+    
 }

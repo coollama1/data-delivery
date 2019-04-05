@@ -12,8 +12,6 @@ public class DataHandler{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
             String password = "209539352";
-
-            String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
             
             String createUserTable = "CREATE TABLE IF NOT EXISTS User("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
@@ -55,11 +53,6 @@ public class DataHandler{
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
 
-            statement.executeUpdate(createDatabase);
-
-            connection = DriverManager.getConnection(host+"Delivery",user,password);
-            statement = connection.createStatement();
-
             statement.executeUpdate(createUserTable);
             statement.executeUpdate(createAdminTable);
             statement.executeUpdate(createMailtypeTable);
@@ -78,7 +71,7 @@ public class DataHandler{
     }
 
     //[name,address]
-    public static String [] getPersonlInfo(String username){
+    public static String [] getPersonlInfo(String userID){
         return null;
     }
 
@@ -86,15 +79,15 @@ public class DataHandler{
         
     }
 
-    public static ArrayList<String> getListOffPackages(String username){
+    public static ArrayList<String> getListOfPackages(String username){
+        rerturn null;
+    }
+
+    public static String getPackageName(String itemID){
         return null;
     }
 
-    public static String getItemName(String itemID){
-        return null;
-    }
-
-    public static boolean isValidItemID(String itemID){
+    public static boolean isValidPackageID(String itemID){
         return false;
     }
 
@@ -115,12 +108,12 @@ public class DataHandler{
     }
 
     //itemName,senderAddress,receiverAdress, mailtype, postOffice, shippingDate, deliveryDate
-    public static String [] getItemDetails(String itemID){
+    public static String [] getPackageDetails(String itemID){
         return null;
     }
 
     //true if item is added, false if user already has item on their account
-    public static boolean addItemForUser(String userID, String itemID){
+    public static boolean addPackageForUser(String userID, String itemID){
         return false;
     }
 
