@@ -72,7 +72,12 @@ public class DataHandler{
 
     //[name,address]
     public static String [] getPersonlInfo(String userID){
-        return null;
+        try{
+
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
     }
 
     public static void createNewUser(String username, String password, String name, String address){
@@ -91,16 +96,12 @@ public class DataHandler{
         return false;
     }
 
-    public static boolean isValidUser(String username, String password){
+    public static boolean isValidUserPassword(String username, String password){
         return false;
     }
 
     public static boolean isValidUsername(String userName){
         return false;
-    }
-
-    public static String getUserID(String username, String password){
-        return null;
     }
 
     public static void updatePersonalInfo(String newName, String password){
