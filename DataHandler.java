@@ -71,21 +71,89 @@ public class DataHandler{
     }
 
     //[name,address]
-    public static String [] getPersonlInfo(String userID){
-        try{
+    public static String [] getPersonlInfo(String username){
+            String [] personalInfo = {"",""};
+            
+            try{
+                String selectUserInfo = "SELECT name,address FROM USER WHERE username=\"" +username+ "\";";
 
+                ResultSet userInfo = statement.executeQuery(selectUserInfo);
+
+                if(userInfo.next()){
+                    personalInfo[0] = userInfo.getString("name");
+                    personalInfo[1] = userInfo.getString("address");
+
+                    userInfo.close();
+
+                    return personalInfo;
+                }
+
+            }catch(Exception expt){
+                expt.printStackTrace();
+            }
+
+        return (personalInfo);
+    }
+
+    public static void createNewUser(String username, String password, String name, String address){
+            try{
+                String insertNewUser = "INSERT IGNORE INTO User VALUES(\"" + username + "\",\"" + password + "\",\"" + name + "\",\"" + address + "\");";
+                statement.executeUpdate(insertNewUser);
+
+            }catch(Exception expt){
+                expt.printStackTrace();
+            }
+    }
+
+    public static boolean isValidUsername(String username){
+        try{
+            int numberOfUsernames = 0;
+            String countUsernames = "SELECT COUNT(1) FROM User WHERE username=\"" + username + "\";";
+            ResultSet countInfo = statement.executeQuery(countUsernames);
+
+            if(countInfo.next()){
+                numberOfUsernames = countInfo.getInt("COUNT(1)");
+            }
+
+            return numberOfUsernames > 0;
+            
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isValidUser(String username, String password){
+        try{
+            int numberOfUsers = 0;
+            String countUsers = "SELECT COUNT(1) FROM User WHERE username=\"" +username+ "\" AND password= \"" +password+ "\";";
+            ResultSet countInfo = statement.executeQuery(countUsers);
+
+            if(countInfo.next()){
+                numberOfUsers = countInfo.getInt("COUNT(1)");
+            }
+
+            return numberOfUsers > 0;
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static void updatePersonalInfo(String username, String newName, String newAddress){
+        try{
+            String updateQuery = "UPDATE User SET name=\"" +newName+ "\", address=\"" +newAddress+ "\" WHERE username=\"" +username+ "\";";
+            statement.executeUpdate(updateQuery);
 
         }catch(Exception expt){
             expt.printStackTrace();
         }
     }
 
-    public static void createNewUser(String username, String password, String name, String address){
-        
-    }
-
-    public static ArrayList<String> getListOfPackages(String username){
-        rerturn null;
+    public static ArrayList<Integer> getListOfPackages(String username){
+        return null;
     }
 
     public static String getPackageName(String itemID){
@@ -96,17 +164,6 @@ public class DataHandler{
         return false;
     }
 
-    public static boolean isValidUserPassword(String username, String password){
-        return false;
-    }
-
-    public static boolean isValidUsername(String userName){
-        return false;
-    }
-
-    public static void updatePersonalInfo(String newName, String password){
-
-    }
 
     //itemName,senderAddress,receiverAdress, mailtype, postOffice, shippingDate, deliveryDate
     public static String [] getPackageDetails(String itemID){
