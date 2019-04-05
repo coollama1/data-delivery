@@ -12,16 +12,9 @@ public class DataHandler{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
             String password = "209539352";
+
+            String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
             
-            connection = DriverManager.getConnection(host,user,password);
-            statement = connection.createStatement();
-
-            //if tables dont exist, create tables
-            //... put in the code here ...
-
-            String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery";
-            String useDatabase = "USE Delivery";
-
             String createUserTable = "CREATE TABLE IF NOT EXISTS User("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
@@ -36,12 +29,12 @@ public class DataHandler{
             + "id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,"
             + "items VARCHAR(128),"
             + "sender VARCHAR(128),"
-            + "user VARCHAR(128),"
+            + "user VARCHAR(128) NOT NULL,"
             + "mailtype VARCHAR(128),"
             + "shippingDate DATE,"
             + "deliveryDate DATE,"
             + "currentStatus VARCHAR(128),"
-            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE"
+            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE,"
             + "FOREIGN KEY(mailtype) REFERENCES Mailtype(name) ON UPDATE CASCADE);"; 
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
@@ -49,12 +42,19 @@ public class DataHandler{
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
 
+            connection = DriverManager.getConnection(host,user,password);
+            statement = connection.createStatement();
+
             statement.executeUpdate(createDatabase);
-            statement.executeUpdate(useDatabase);
+
+            connection = DriverManager.getConnection(host+"Delivery",user,password);
+            statement = connection.createStatement();
+
             statement.executeUpdate(createUserTable);
-            statement.executeUpdate(createPackageTable);
             statement.executeUpdate(createAdminTable);
             statement.executeUpdate(createMailtypeTable);
+            statement.executeUpdate(createPackageTable);
+            
 
         }catch(Exception expt){
             expt.printStackTrace();
