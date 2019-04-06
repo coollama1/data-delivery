@@ -72,7 +72,8 @@ public class DataHandler{
             statement.executeUpdate(insertAdmin);
 
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
-            
+            //createNewPackage("Package 1","Red Dress, Nintendo Switch", "1234 Long St Ave", "jconnor", "Standard Mail","2019-03-12","2019-03-25","Delivered");
+            //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
         }catch(Exception expt){
             expt.printStackTrace();
         }
@@ -176,7 +177,7 @@ public class DataHandler{
     public static boolean isValidPackageID(String packageID){
         try{
             int numberOfPackages = 0;
-            String countPackages = "SELECT COUNT(1) FROM Package WHERE id=" +packageID+ ");";
+            String countPackages = "SELECT COUNT(1) FROM Package WHERE id=" +packageID+ ";";
             ResultSet countInfo = statement.executeQuery(countPackages);
 
             if(countInfo.next()){
@@ -212,14 +213,14 @@ public class DataHandler{
         return "";
     }
 
-    public static ArrayList<Integer> getListOfPackages(String username){
-        ArrayList<Integer> listOfPackageIDs = new ArrayList<>();
+    public static ArrayList<String> getListOfPackages(String username){
+        ArrayList<String> listOfPackageIDs = new ArrayList<>();
         try{
             String selectPackages = "SELECT id FROM Package WHERE user=\"" +username+ "\";";
             ResultSet packageInfo = statement.executeQuery(selectPackages);
 
             while(packageInfo.next()){
-                listOfPackageIDs.add(packageInfo.getInt("id"));
+                listOfPackageIDs.add(Integer.toString(packageInfo.getInt("id")));
             }
             packageInfo.close();
 
@@ -237,7 +238,7 @@ public class DataHandler{
             String selectPackage = "SELECT * FROM Package WHERE id=" +packageID+ ";";
             ResultSet packageInfo = statement.executeQuery(selectPackage);
 
-            if(selectPackage.next()){
+            if(packageInfo.next()){
                 packageDetails[0] = packageInfo.getString("name");
                 packageDetails[1] = packageInfo.getString("items");
                 packageDetails[2] = packageInfo.getString("sender");

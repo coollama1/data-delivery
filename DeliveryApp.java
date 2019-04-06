@@ -107,8 +107,10 @@ public class DeliveryApp extends Application{
     		String password = newPWTextField.getText();
     		String name = fNameTextField.getText() + " " + lNameTextField.getText();
     		String address = newAddressTextField.getText();
-            if(DataHadnler.isValidUsername(username))
+            if(DataHandler.isValidUsername(username))
                 DataHandler.createNewUser(username,password,name,address);
+			System.out.println(DataHandler.isValidPackageID("12345678"));
+			DataHandler.getListOfPackages("jconnor").forEach( i -> System.out.println(DataHandler.getPackageName(i)));
             window.setScene(loginScene);
     		});
     	
