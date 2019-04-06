@@ -14,7 +14,7 @@ import javafx.scene.text.Font;
 public class DeliveryApp extends Application{
 	
 	Stage window;
-	Scene signUpScene,loginScene,scene1;
+	Scene signUpScene,loginScene,scene4;
     
     public static void main(String [] args){
     	
@@ -30,7 +30,6 @@ public class DeliveryApp extends Application{
     	grid1.setHgap(10);
     	grid1.setVgap(10);
     	grid1.setPadding(new Insets(25, 25, 25, 25));
-    	
     	
     	Text scenetitle = new Text("Welcome to Data Deliverers");
     	scenetitle.setFont(Font.font("Georgia",25));
@@ -66,6 +65,8 @@ public class DeliveryApp extends Application{
     	grid1.add(sBtn, 0, 4);
     	signUpBtn.setOnAction(e -> window.setScene(signUpScene));
     	
+    	/////////////////////////////////////////////////////////
+    	
     	GridPane grid2 = new GridPane();
     	grid2.setAlignment(Pos.BASELINE_CENTER);
     	grid2.setHgap(8);
@@ -73,7 +74,7 @@ public class DeliveryApp extends Application{
     	grid2.setPadding(new Insets(25, 25, 25, 25));
     	
     	Text signUpTitle = new Text("Sign Up");
-    	signUpTitle.setFont(Font.font("Impact",25));
+    	signUpTitle.setFont(Font.font("Georgia",25));
     	grid2.add(signUpTitle,0,0);
     	
     	Label newUserName = new Label("Username");
@@ -125,11 +126,62 @@ public class DeliveryApp extends Application{
     	retBtn.getChildren().add(returnBtn);
     	grid2.add(retBtn, 0, 11);
     	returnBtn.setOnAction(e -> window.setScene(loginScene));
+    	
+    	///////////////////////////////////////////////////////////
+    	
+    	GridPane grid4 = new GridPane();
+    	grid4.setAlignment(Pos.BASELINE_LEFT);
+    	grid4.setHgap(20);
+    	grid4.setVgap(20);
+    	grid4.setPadding(new Insets(25, 25, 25, 25));
+    	
+    	Label item = new Label("Items:");
+    	grid4.add(item, 0, 1);
+    	Label itemOutput = new Label();
+    	grid4.add(itemOutput, 1, 1);
+    	
+    	Label sender = new Label("Sender:");
+    	grid4.add(sender, 0, 2);
+    	Label senderOutput = new Label();
+    	grid4.add(senderOutput, 1, 2);
+    	
+    	Label receiver = new Label("Receiver:");
+    	grid4.add(receiver, 0, 3);
+    	Label receiverOutput = new Label();
+    	grid4.add(receiverOutput, 1, 3);
 
+    	Label mailType = new Label("Mailtype:");
+    	grid4.add(mailType, 0, 4);
+    	Label mailOutput = new Label();
+    	grid4.add(mailOutput, 1, 4);
+    	
+    	Label shipDate = new Label("Shipping Date:");
+    	grid4.add(shipDate, 0, 5);
+    	Label shipOutput = new Label();
+    	grid4.add(shipOutput, 1, 5);
+    	
+    	Label deliverDate = new Label("Delivery Date:");
+    	grid4.add(deliverDate, 0, 6);
+    	Label deliverOutput = new Label();
+    	grid4.add(deliverOutput, 1, 6);
+    	
+    	Label currentStatus = new Label("Current Status:");
+    	grid4.add(currentStatus, 0, 7);
+    	Label currentOutput = new Label();
+    	grid4.add(currentOutput, 1, 7);
+    	
+    	Button backBtn = new Button("Back");
+    	HBox bBtn = new HBox(5);
+    	bBtn.setAlignment(Pos.BOTTOM_LEFT);
+    	bBtn.getChildren().add(backBtn);
+    	grid4.add(bBtn, 0, 8);
+    	
+    	
     	loginScene = new Scene(grid1, 400, 250);
     	signUpScene = new Scene(grid2,350,450);
+    	scene4 = new Scene(grid4,400,400);
 
-    	stage.setScene(loginScene);
+    	stage.setScene(scene4);
     	
         stage.show();
     }   
