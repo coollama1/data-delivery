@@ -26,7 +26,7 @@ public class FifthScene extends Application{
         trackingTitle.setFont(new Font("georgia", 20));//arial,courier new, tiems new roman
         trackingTextField.setPrefWidth(100);
 
-        //layout.setAlignment(Pos.BASELINE_CENTER);
+        layout.setAlignment(Pos.BASELINE_CENTER);
         layout.setPadding(new Insets(25,25,25,25));
         layout.setHgap(10);
         layout.setVgap(10);
