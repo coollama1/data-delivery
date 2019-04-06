@@ -73,7 +73,7 @@ public class DataHandler{
 
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
             //createNewPackage("Package 1","Red Dress, Nintendo Switch", "1234 Long St Ave", "jconnor", "Standard Mail","2019-03-12","2019-03-25","Delivered");
-            //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
+            
         }catch(Exception expt){
             expt.printStackTrace();
         }
