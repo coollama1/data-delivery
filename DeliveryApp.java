@@ -33,7 +33,7 @@ public class DeliveryApp extends Application{
     	
     	
     	Text scenetitle = new Text("Welcome to Data Deliverers");
-    	scenetitle.setFont(Font.font("Georgia",25));
+    	scenetitle.setFont(Font.font("Impact",25));
     	grid1.add(scenetitle, 0, 0, 2, 1);
     	
     	Label userName = new Label("Username:");
@@ -51,13 +51,7 @@ public class DeliveryApp extends Application{
     	lBtn.setAlignment(Pos.BOTTOM_RIGHT);
     	lBtn.getChildren().add(loginBtn);
     	grid1.add(lBtn, 1, 4);
-    	loginBtn.setOnAction(e -> {
-    		String checkUser = userTextField.getText();
-    		String checkPW = pwTextField.getText();
-    		System.out.println(checkUser);
-    		System.out.println(checkPW);
-    		//stage.setScene(scene1)
-    		});
+    	loginBtn.setOnAction(e -> stage.setScene(scene1));
     	
     	Button signUpBtn = new Button("Sign Up");
     	HBox sBtn = new HBox(5);
@@ -65,6 +59,8 @@ public class DeliveryApp extends Application{
     	sBtn.getChildren().add(signUpBtn);
     	grid1.add(sBtn, 0, 4);
     	signUpBtn.setOnAction(e -> window.setScene(signUpScene));
+    	
+    	
     	
     	GridPane grid2 = new GridPane();
     	grid2.setAlignment(Pos.BASELINE_CENTER);
@@ -107,16 +103,15 @@ public class DeliveryApp extends Application{
     	creBtn.getChildren().add(createBtn);
     	grid2.add(creBtn, 1, 11);
     	createBtn.setOnAction(e -> {
-    		String tempUserName = newUserTextField.getText();
-    		String tempPW = newPWTextField.getText();
-    		String tempFName = fNameTextField.getText();
-    		String tempLName = lNameTextField.getText();
-    		String tempAddress = newAddressTextField.getText();
-    		System.out.println(tempUserName);
-    		System.out.println(tempPW);
-    		System.out.println(tempFName);
-    		System.out.println(tempLName);
-    		System.out.println(tempAddress);
+    		String username = newUserTextField.getText();
+    		String password = newPWTextField.getText();
+    		String name = fNameTextField.getText() + " " + lNameTextField.getText();
+    		String address = newAddressTextField.getText();
+            if(DataHandler.isValidUsername(username))
+                DataHandler.createNewUser(username,password,name,address);
+			System.out.println(DataHandler.isValidPackageID("12345678"));
+			DataHandler.getListOfPackages("jconnor").forEach( i -> System.out.println(DataHandler.getPackageName(i)));
+            window.setScene(loginScene);
     		});
     	
     	Button returnBtn = new Button("Back");
@@ -125,10 +120,11 @@ public class DeliveryApp extends Application{
     	retBtn.getChildren().add(returnBtn);
     	grid2.add(retBtn, 0, 11);
     	returnBtn.setOnAction(e -> window.setScene(loginScene));
-
+    	
+    	
     	loginScene = new Scene(grid1, 400, 250);
     	signUpScene = new Scene(grid2,350,450);
-
+    	
     	stage.setScene(loginScene);
     	
         stage.show();
