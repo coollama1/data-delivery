@@ -128,6 +128,7 @@ public class DeliveryApp extends Application{
     	returnBtn.setOnAction(e -> window.setScene(loginScene));
     	
     	///////////////////////////////////////////////////////////
+    	String info = "Your information";
     	
     	GridPane grid4 = new GridPane();
     	grid4.setAlignment(Pos.BASELINE_LEFT);
@@ -137,37 +138,37 @@ public class DeliveryApp extends Application{
     	
     	Label item = new Label("Items:");
     	grid4.add(item, 0, 1);
-    	Label itemOutput = new Label();
+    	Label itemOutput = new Label(info);
     	grid4.add(itemOutput, 1, 1);
     	
     	Label sender = new Label("Sender:");
     	grid4.add(sender, 0, 2);
-    	Label senderOutput = new Label();
+    	Label senderOutput = new Label(info);
     	grid4.add(senderOutput, 1, 2);
     	
     	Label receiver = new Label("Receiver:");
     	grid4.add(receiver, 0, 3);
-    	Label receiverOutput = new Label();
+    	Label receiverOutput = new Label(info);
     	grid4.add(receiverOutput, 1, 3);
 
     	Label mailType = new Label("Mailtype:");
     	grid4.add(mailType, 0, 4);
-    	Label mailOutput = new Label();
+    	Label mailOutput = new Label(info);
     	grid4.add(mailOutput, 1, 4);
     	
     	Label shipDate = new Label("Shipping Date:");
     	grid4.add(shipDate, 0, 5);
-    	Label shipOutput = new Label();
+    	Label shipOutput = new Label(info);
     	grid4.add(shipOutput, 1, 5);
     	
     	Label deliverDate = new Label("Delivery Date:");
     	grid4.add(deliverDate, 0, 6);
-    	Label deliverOutput = new Label();
+    	Label deliverOutput = new Label(info);
     	grid4.add(deliverOutput, 1, 6);
     	
     	Label currentStatus = new Label("Current Status:");
     	grid4.add(currentStatus, 0, 7);
-    	Label currentOutput = new Label();
+    	Label currentOutput = new Label(info);
     	grid4.add(currentOutput, 1, 7);
     	
     	Button backBtn = new Button("Back");
