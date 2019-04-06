@@ -70,6 +70,8 @@ public class DataHandler{
             statement.executeUpdate(insertFirstClassMail);
             statement.executeUpdate(insertPriorityMail);
             statement.executeUpdate(insertAdmin);
+
+            createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
             
         }catch(Exception expt){
             expt.printStackTrace();
@@ -78,7 +80,7 @@ public class DataHandler{
     }
 
     //[name,address]
-    public static String [] getPersonlInfo(String username){
+    public static String [] getPersonalInfo(String username){
             String [] personalInfo = {"",""};
             
             try{
