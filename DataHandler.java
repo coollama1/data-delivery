@@ -24,7 +24,7 @@ public class DataHandler{
             String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
             + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "description VARCHAR(1280));";
-
+            
             String createPackageTable = "CREATE TABLE IF NOT EXISTS Package("
             + "id INT AUTO_INCREMENT PRIMARY KEY,"
             + "name VARCHAR(128),"
@@ -79,7 +79,7 @@ public class DataHandler{
 
     }
 
-    //[name,address]
+    //reutrns [name,address] based on username inpuit
     public static String [] getPersonalInfo(String username){
             String [] personalInfo = {"",""};
             
@@ -161,27 +161,110 @@ public class DataHandler{
         }
     }
 
-    public static ArrayList<Integer> getListOfPackages(String username){
-        return null;
+    //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
+    public static void createNewPackage(String name, String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
+        try{
+            String createPackageQuery = "INSERT IGNORE INTO Package(name,items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus) VALUES(\"" +name+ "\",\"" +items+ "\",\"" +senderAddress+ "\",\"" +username+ "\",\"" +mailtype+ "\",\"" +shippingDate+ "\",\"" +deliveryDate+ "\",\"" +currentStatus+ "\");";   
+            statement.executeUpdate(createPackageQuery);
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
     }
 
-    public static String getPackageName(String itemID){
-        return null;
-    }
+    //packageID is a string, but must be convertible to an int
+    public static boolean isValidPackageID(String packageID){
+        try{
+            int numberOfPackages = 0;
+            String countPackages = "SELECT COUNT(1) FROM Package WHERE id=" +packageID+ ");";
+            ResultSet countInfo = statement.executeQuery(countPackages);
 
-    public static boolean isValidPackageID(String itemID){
+            if(countInfo.next()){
+                numberOfPackages = countInfo.getInt("COUNT(1)");
+                countInfo.close();
+            }
+
+            return numberOfPackages > 0;
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
         return false;
     }
 
+    public static String getPackageName(String packageID){
+        try{
+            String name = "";
+            String selectPackageNameQuery = "SELECT name FROM Package WHERE id=" +packageID+ ";";
+            ResultSet nameInfo = statement.executeQuery(selectPackageNameQuery);
 
-    //itemName,senderAddress,receiverAdress, mailtype, postOffice, shippingDate, deliveryDate
-    public static String [] getPackageDetails(String itemID){
-        return null;
+            if(nameInfo.next())
+                name = nameInfo.getString("name");
+
+                nameInfo.close();
+                return name;
+            
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public static ArrayList<Integer> getListOfPackages(String username){
+        ArrayList<Integer> listOfPackageIDs = new ArrayList<>();
+        try{
+            String selectPackages = "SELECT id FROM Package WHERE user=\"" +username+ "\";";
+            ResultSet packageInfo = statement.executeQuery(selectPackages);
+
+            while(packageInfo.next()){
+                listOfPackageIDs.add(packageInfo.getInt("id"));
+            }
+            packageInfo.close();
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+
+        return listOfPackageIDs;
+    }
+
+    //name,items,senderAddress, mailtype, shippingDate, deliveryDate, currentStatus
+    public static String [] getPackageDetails(String packageID){
+        String [] packageDetails = {"","","","","","",""};
+        try{
+            String selectPackage = "SELECT * FROM Package WHERE id=" +packageID+ ";";
+            ResultSet packageInfo = statement.executeQuery(selectPackage);
+
+            if(selectPackage.next()){
+                packageDetails[0] = packageInfo.getString("name");
+                packageDetails[1] = packageInfo.getString("items");
+                packageDetails[2] = packageInfo.getString("sender");
+                packageDetails[3] = packageInfo.getString("mailType");
+                packageDetails[4] = packageInfo.getDate("shippingDate").toString();
+                packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
+                packageDetails[6] = packageInfo.getString("currentStatus");
+            }
+
+            packageInfo.close();
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+        return packageDetails;
     }
 
     //true if item is added, false if user already has item on their account
-    public static boolean addPackageForUser(String userID, String itemID){
-        return false;
+    public static void addPackageForUser(String username, String packageID){
+        try{
+            String addPackage = "INSERT IGNORE INTO Package(user) VALUES(\"" +username+ "\") WHERE id=" +packageID+ ";";
+            
+            statement.executeUpdate(addPackage);
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
     }
 
     public static void closeEverything(){
