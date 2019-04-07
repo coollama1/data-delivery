@@ -269,6 +269,24 @@ public class DataHandler{
         }
     }
 
+    public static boolean isValidAdmin(String username, String password){
+        try{
+            int numberOfAdmins = 0;
+            String countAdminQuery = "SELECT COUNT(1) FROM Admin WHERE username=\"" +username+ "\" AND password=\"" +password+ "\";";
+            ResultSet countInfo = statement.executeQuery(countAdminQuery);
+
+            if(countInfo.next()){
+                numberOfAdmins = countInfo.getInt("COUNT(1)");
+            }
+            countInfo.close();
+            return numberOfAdmins > 0;
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+        return false;
+    }
+
     public static void closeEverything(){
         try{
             if(connection!= null)
@@ -280,5 +298,7 @@ public class DataHandler{
             expt.printStackTrace();
         }
     }
+
+
 
 }
