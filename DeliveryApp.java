@@ -38,8 +38,9 @@ public class DeliveryApp extends Application{
         fourthScene = new FourthScene();
         fifthScene = new FifthScene();
         sixthScene = new SixthScene();
+        seventhScene = new SeventhScene();
 
-        window.setScene(firstScene);
+        window.setScene(seventhScene);
         window.show();
     }
 
@@ -408,7 +409,7 @@ public class DeliveryApp extends Application{
     	HBox cBtn;
     	
         public SeventhScene(){
-            super(new GridPane(),400,500);
+            super(new GridPane(),400,530);
             
             layout = (GridPane)this.getRoot();
             title = new Text("Add Package");
@@ -438,9 +439,8 @@ public class DeliveryApp extends Application{
             enterBtn.setOnAction(e -> {
             	
             });
-            
-            cancelBtn.setOnAction(e -> );
             */
+            cancelBtn.setOnAction(e -> window.setScene(firstScene));
             
             eBtn.setAlignment(Pos.BOTTOM_RIGHT);
         	eBtn.getChildren().add(enterBtn);
@@ -471,7 +471,7 @@ public class DeliveryApp extends Application{
         	layout.add(tracking, 0, 8);
         	layout.add(trackingTextField, 1, 8);
         	layout.add(eBtn, 1, 9);
-        	layout.add(bBtn, 0, 9);
+        	layout.add(cBtn, 0, 9);
         }
 
     }
