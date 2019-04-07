@@ -23,6 +23,7 @@ public class DeliveryApp extends Application{
     FourthScene fourthScene;
     FifthScene fifthScene;
     SixthScene sixthScene;
+    SeventhScene seventhScene;
     
     public static void main(String [] args){
         launch(args);
@@ -74,7 +75,7 @@ public class DeliveryApp extends Application{
             loginBtn.setOnAction(e -> {
                 String checkUser = userTextField.getText();
                 String checkPW = pwTextField.getText();
-                if(checkUser.equals("1234567")){
+                if(true){
                     userTextField.setText("");
                     pwTextField.setText("");
                     window.setScene(secondScene);
@@ -112,7 +113,7 @@ public class DeliveryApp extends Application{
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),400,400);
+            super(new GridPane(),550,400);
 
             layout = (GridPane)this.getRoot();
             listOfNames = FXCollections.observableArrayList("person 1","person 2","person 3");
@@ -286,7 +287,7 @@ public class DeliveryApp extends Application{
             layout.setVgap(10);
             
             trackingEnterButton.setOnAction(e -> {
-                if(trackingTextField.getText().equals("1234567")){
+                if(true){
                     trackingTextField.setText("");
                     layout.getChildren().remove(errorMessage);
                     window.setScene(secondScene);
@@ -380,6 +381,14 @@ public class DeliveryApp extends Application{
             layout.add(retBtn, 0, 11);
             layout.add(creBtn, 1, 11);
         }
+    }
+
+    class SeventhScene extends Scene{
+
+        public SeventhScene(){
+            super(new GridPane(),300,300);
+        }
+
     }
     
 }
