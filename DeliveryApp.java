@@ -110,15 +110,16 @@ public class DeliveryApp extends Application{
         Button editPersonalInfoButton;
         Button viewPackageDetailsButton;
         Button addPackageButton;
-        ObservableList<String> listOfNames;
+        ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
             super(new GridPane(),550,400);
 
             layout = (GridPane)this.getRoot();
-            listOfNames = FXCollections.observableArrayList("person 1","person 2","person 3");
-            listView = new ListView<>(listOfNames);
+            listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
+            listView = new ListView<>(listOfPack);
+            
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
@@ -127,6 +128,10 @@ public class DeliveryApp extends Application{
             viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
 
+            listView.setPrefWidth(100);
+            listView.setPrefHeight(70);
+            listView.setOrientation(Orientation.HORIZONTAL);
+            
             layout.add(listView,0,0);
             layout.add(editPersonalInfoButton,0,1);
             layout.add(viewPackageDetailsButton,1,1);
@@ -267,7 +272,7 @@ public class DeliveryApp extends Application{
         Text errorMessage;
         TextField trackingTextField;
         Button trackingEnterButton;
-        Button trackingCancleButton;
+        Button trackingCancelButton;
         
         public FifthScene(){
             super(new GridPane(),350,180);
@@ -277,7 +282,7 @@ public class DeliveryApp extends Application{
             errorMessage = new Text("Wrong Number");
             trackingTextField = new TextField();
             trackingEnterButton = new Button("Enter");
-            trackingCancleButton = new Button("Cancle");
+            trackingCancelButton = new Button("Cancel");
 
             trackingTitle.setFont(new Font("georgia", 20));
             errorMessage.setFill(Color.CRIMSON);
@@ -298,12 +303,12 @@ public class DeliveryApp extends Application{
                         layout.add(errorMessage,2,2);
                 }
             });
-            trackingCancleButton.setOnAction(e -> window.setScene(secondScene));
+            trackingCancelButton.setOnAction(e -> window.setScene(secondScene));
 
             layout.add(trackingTitle, 0,0,2,1);
             layout.add(trackingTextField,0,1,2,1);
             layout.add(trackingEnterButton,0,2);
-            layout.add(trackingCancleButton,1,2);
+            layout.add(trackingCancelButton,1,2);
         }
     }
 
