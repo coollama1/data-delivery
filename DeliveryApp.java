@@ -384,9 +384,94 @@ public class DeliveryApp extends Application{
     }
 
     class SeventhScene extends Scene{
-
+    	GridPane layout;
+    	Text title;
+    	Label receivingUser;
+    	TextField receiverTextField;
+    	Label itemLabel;
+    	TextField itemTextField;
+    	Label senderLabel;
+    	TextField senderTextField;
+    	Label mailLabel;
+    	TextField mailTextField;
+    	Label shippingDate;
+    	TextField shippingTextField;
+    	Label deliveryDate;
+    	TextField deliveryTextField;
+    	Label statusLabel;
+    	TextField statusTextField;
+    	Label tracking;
+    	Label trackingTextField;
+    	Button enterBtn;
+    	HBox eBtn;
+    	Button cancelBtn;
+    	HBox cBtn;
+    	
         public SeventhScene(){
-            super(new GridPane(),300,300);
+            super(new GridPane(),400,500);
+            
+            layout = (GridPane)this.getRoot();
+            title = new Text("Add Package");
+            receivingUser = new Label("Receiving User:");
+            receiverTextField = new TextField();
+            itemLabel = new Label("Receiving User:");
+            itemTextField = new TextField();
+            senderLabel = new Label("Sender:");
+            senderTextField = new TextField();
+            mailLabel = new Label("Mail Type:");
+            mailTextField = new TextField();
+            shippingDate = new Label("Shipping Date:");
+            shippingTextField = new TextField();
+            deliveryDate = new Label("Delivery Date:");
+            deliveryTextField = new TextField();
+            statusLabel = new Label("Current Status:");
+            statusTextField = new TextField();
+            tracking = new Label("Tracking #:");
+            trackingTextField = new Label("test");
+            enterBtn = new Button("Enter");
+            eBtn = new HBox(5);
+            cancelBtn = new Button("Cancel");
+            cBtn = new HBox(5);
+            
+            title.setFont(Font.font("Georgia",25));
+            /*
+            enterBtn.setOnAction(e -> {
+            	
+            });
+            
+            cancelBtn.setOnAction(e -> );
+            */
+            
+            eBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        	eBtn.getChildren().add(enterBtn);
+        	
+        	cBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        	cBtn.getChildren().add(cancelBtn);
+        	
+        	layout.setAlignment(Pos.BASELINE_LEFT);
+        	layout.setHgap(15);
+        	layout.setVgap(20);
+        	layout.setPadding(new Insets(25, 25, 25, 25));
+        	
+        	layout.add(title, 0, 0, 2, 1);
+        	layout.add(receivingUser, 0, 1);
+        	layout.add(receiverTextField,1,1);
+        	layout.add(itemLabel, 0, 2);
+        	layout.add(itemTextField,1,2);
+        	layout.add(senderLabel, 0, 3);
+        	layout.add(senderTextField,1,3);
+        	layout.add(mailLabel, 0, 4);
+        	layout.add(mailTextField,1,4);
+        	layout.add(shippingDate, 0, 5);
+        	layout.add(shippingTextField,1,5);
+        	layout.add(deliveryDate, 0, 6);
+        	layout.add(deliveryTextField,1,6);
+        	layout.add(statusLabel, 0, 7);
+        	layout.add(statusTextField,1,7);
+        	layout.add(tracking, 0, 8);
+        	layout.add(trackingTextField, 1, 8);
+        	layout.add(eBtn, 1, 9);
+        	layout.add(bBtn, 0, 9);
         }
 
     }
