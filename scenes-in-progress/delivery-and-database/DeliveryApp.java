@@ -1,11 +1,10 @@
 import javafx.application.*;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.*;
-import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -132,29 +131,38 @@ public class DeliveryApp extends Application{
         Button editPersonalInfoButton;
         Button viewPackageDetailsButton;
         Button addPackageButton;
+        ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
             super(new GridPane(),550,400);
 
             layout = (GridPane)this.getRoot();
-            listOfPackageIDs = FXCollections.observableArrayList("person 1","person 2","person 3");
-            listView = new ListView<>(listOfPackageIDs);
+            listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
+            listView = new ListView<>(listOfPack);
+            
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
-
+            Label Pre_name = new Label("   Name:");
+            Label Pre_addr = new Label("Address:");
+            Label packList = new Label("Mail/Packages");
+            
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
-            viewPackageDetailsButton.setOnAction(e ->{
-                fourthScene = new FourthScene(); 
-                window.setScene(fourthScene);
-            });
+            viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
 
-            layout.add(listView,0,0);
-            layout.add(editPersonalInfoButton,0,1);
-            layout.add(viewPackageDetailsButton,1,1);
-            layout.add(addPackageButton,2,1);
+            listView.setPrefWidth(250);
+            listView.setPrefHeight(400);
+            listView.setOrientation(Orientation.VERTICAL);
+            
+            layout.add(listView,0,5);
+            layout.add(editPersonalInfoButton,0,3);
+            layout.add(viewPackageDetailsButton,0,6);
+            layout.add(addPackageButton,1,6);
+            layout.add(Pre_name,0,0);
+            layout.add(Pre_addr,0,2);
+            layout.add(packList,0,4);
         }
     }
 
