@@ -40,7 +40,7 @@ public class DataHandler{
 
             String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
             
-            String insertAdmin = "INSERT IGNORE INTO ADMIN VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
+            String insertAdmin = "INSERT IGNORE INTO Admin VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
 
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();

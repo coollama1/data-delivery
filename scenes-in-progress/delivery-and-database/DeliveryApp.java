@@ -34,6 +34,7 @@ public class DeliveryApp extends Application{
         launch(args);
     }
 
+    @Override
     public void start(Stage stage){
         window = stage;
 
