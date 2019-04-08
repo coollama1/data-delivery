@@ -71,7 +71,7 @@ public class DataHandler{
             String [] personalInfo = {"",""};
             
             try{
-                String selectUserInfo = "SELECT name,address FROM USER WHERE username=\"" +username+ "\";";
+                String selectUserInfo = "SELECT name,address FROM User WHERE username=\"" +username+ "\";";
 
                 ResultSet userInfo = statement.executeQuery(selectUserInfo);
 
@@ -216,9 +216,9 @@ public class DataHandler{
             ResultSet packageInfo = statement.executeQuery(selectPackage);
 
             if(packageInfo.next()){
-                packageDetails[0] = packageInfo.getString("name");
-                packageDetails[1] = packageInfo.getString("items");
-                packageDetails[2] = packageInfo.getString("sender");
+                packageDetails[0] = packageInfo.getString("items");
+                packageDetails[1] = packageInfo.getString("sender");
+                packageDetails[2] = packageInfo.getString("user");
                 packageDetails[3] = packageInfo.getString("mailType");
                 packageDetails[4] = packageInfo.getDate("shippingDate").toString();
                 packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
