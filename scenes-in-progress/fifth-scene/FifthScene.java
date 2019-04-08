@@ -20,7 +20,7 @@ public class FifthScene extends Application{
         Text trackingTitle = new Text("Enter Tracking Number");
         TextField trackingTextField = new TextField();
         Button trackingEnterButton = new Button("Enter");
-        Button trackingCancleButton = new Button("Cancle");
+        Button trackingCancleButton = new Button("Cancel");
         Scene testingScene = new Scene(layout,350,180);//possible dimensions: 400, 250
         
         trackingTitle.setFont(new Font("georgia", 20));//arial,courier new, tiems new roman

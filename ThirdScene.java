@@ -52,14 +52,14 @@ public class ThirdScene extends Application{
         HBox sveBtn = new HBox(5);
         saveBtn.setAlignment(Pos.BOTTOM_RIGHT);
         sveBtn.getChildren().add(saveBtn);
-        grid3.add(sveBtn,1,7);
+        grid3.add(sveBtn,2,7);
         //saveBtn.setOnAction(e -> )
 
         Button cancelBtn = new Button("Cancel");
         HBox cnclBtn = new HBox(5);
         cnclBtn.setAlignment(Pos.BOTTOM_LEFT);
         cnclBtn.getChildren().add(cancelBtn);
-        grid3.add(cnclBtn,0,7);
+        grid3.add(cnclBtn,1,7);
         //cancelBtn.setOnAction(e -> window.setScene(loginScene));
 
         //changeInfoScene = new Scene(grid3,350,350);
