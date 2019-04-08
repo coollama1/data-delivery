@@ -6,6 +6,7 @@ import javafx.stage.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -40,7 +41,7 @@ public class DeliveryApp extends Application{
         sixthScene = new SixthScene();
         seventhScene = new SeventhScene();
 
-        window.setScene(seventhScene);
+        window.setScene(firstScene);
         window.show();
     }
 

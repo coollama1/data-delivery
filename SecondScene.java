@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
+import javafx.geometry.Orientation;
+import javafx.scene.control.ListView;
+import javafx.collections.*;
 //work in progress
 
 public class SecondScene extends Application{
