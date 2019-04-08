@@ -6,7 +6,6 @@ import javafx.stage.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.*;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -25,6 +24,11 @@ public class DeliveryApp extends Application{
     FifthScene fifthScene;
     SixthScene sixthScene;
     SeventhScene seventhScene;
+
+    String curerntUsername;
+    String currentAdmin;
+    String currentPackageID;
+    ObservableList<String> listOfPackageIDs;
     
     public static void main(String [] args){
         launch(args);
@@ -43,6 +47,11 @@ public class DeliveryApp extends Application{
 
         window.setScene(firstScene);
         window.show();
+    }
+
+    @Override
+    public void stop(){
+        DataHandler.closeEverything();
     }
 
     class FirstScene extends Scene{
@@ -75,16 +84,27 @@ public class DeliveryApp extends Application{
             sceneTitle.setFont(Font.font("Georgia",25));
 
             loginBtn.setOnAction(e -> {
-                String checkUser = userTextField.getText();
-                String checkPW = pwTextField.getText();
-                if(true){
+                String tempUsername = userTextField.getText();
+                String tempPassword = pwTextField.getText();
+                if(DataHandler.isValidUser(tempUsername,tempPassword)){
+                    curerntUsername = tempUsername;
                     userTextField.setText("");
                     pwTextField.setText("");
+                    secondScene = new SecondScene();
                     window.setScene(secondScene);
                 }
+                if(DataHandler.isValidAdmin(tempUsername,tempPassword)){
+                    userTextField.setText("");
+                    pwTextField.setText("");
+                    seventhScene = new SeventhScene();
+                    window.setScene(seventhScene);
+                }
             });
-            signUpBtn.setOnAction(e -> window.setScene(sixthScene));
-
+            signUpBtn.setOnAction(e -> {
+                userTextField.setText("");
+                pwTextField.setText("");
+                window.setScene(sixthScene);
+            });
             lBtn.setAlignment(Pos.BOTTOM_RIGHT);
             lBtn.getChildren().add(loginBtn);
 
@@ -111,28 +131,25 @@ public class DeliveryApp extends Application{
         Button editPersonalInfoButton;
         Button viewPackageDetailsButton;
         Button addPackageButton;
-        ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
             super(new GridPane(),550,400);
 
             layout = (GridPane)this.getRoot();
-            listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
-            listView = new ListView<>(listOfPack);
-            
+            listOfPackageIDs = FXCollections.observableArrayList("person 1","person 2","person 3");
+            listView = new ListView<>(listOfPackageIDs);
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
 
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
-            viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
+            viewPackageDetailsButton.setOnAction(e ->{
+                fourthScene = new FourthScene(); 
+                window.setScene(fourthScene);
+            });
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
 
-            listView.setPrefWidth(100);
-            listView.setPrefHeight(70);
-            listView.setOrientation(Orientation.HORIZONTAL);
-            
             layout.add(listView,0,0);
             layout.add(editPersonalInfoButton,0,1);
             layout.add(viewPackageDetailsButton,1,1);
@@ -155,7 +172,7 @@ public class DeliveryApp extends Application{
         HBox cnclBtn;
 
         public ThirdScene(){
-            super(new GridPane(),450,350);
+            super(new GridPane(),450,280);
 
             layout = (GridPane)this.getRoot();
             changeInfoTitle = new Text("Change Personal Info");
@@ -177,8 +194,14 @@ public class DeliveryApp extends Application{
             sveBtn.getChildren().add(saveBtn);
             cnclBtn.getChildren().add(cancelBtn);
 
-            saveBtn.setOnAction(e -> window.setScene(secondScene));
-            cancelBtn.setOnAction(e -> window.setScene(secondScene));
+            saveBtn.setOnAction(e -> {
+                DataHandler.updatePersonalInfo(curerntUsername, newFTextField.getText() +" "+ newLTextField.getText(), newAddressField.getText());
+                secondScene = new SecondScene();
+                window.setScene(secondScene);
+            });
+            cancelBtn.setOnAction(e -> {
+                window.setScene(secondScene);
+            });
 
             layout.setAlignment(Pos.BASELINE_CENTER);
             layout.setHgap(10);
@@ -273,7 +296,7 @@ public class DeliveryApp extends Application{
         Text errorMessage;
         TextField trackingTextField;
         Button trackingEnterButton;
-        Button trackingCancelButton;
+        Button trackingCancleButton;
         
         public FifthScene(){
             super(new GridPane(),350,180);
@@ -283,7 +306,7 @@ public class DeliveryApp extends Application{
             errorMessage = new Text("Wrong Number");
             trackingTextField = new TextField();
             trackingEnterButton = new Button("Enter");
-            trackingCancelButton = new Button("Cancel");
+            trackingCancleButton = new Button("Cancle");
 
             trackingTitle.setFont(new Font("georgia", 20));
             errorMessage.setFill(Color.CRIMSON);
@@ -294,22 +317,20 @@ public class DeliveryApp extends Application{
             layout.setVgap(10);
             
             trackingEnterButton.setOnAction(e -> {
-                if(true){
+                String trackingNumber = trackingTextField.getText();
+                if(DataHandler.isValidPackageID(trackingNumber)){
+                    DataHandler.addPackageForUser(curerntUsername,trackingNumber);
                     trackingTextField.setText("");
-                    layout.getChildren().remove(errorMessage);
+                    secondScene = new SecondScene();
                     window.setScene(secondScene);
                 }
-                else{
-                    if(!layout.getChildren().contains(errorMessage))
-                        layout.add(errorMessage,2,2);
-                }
             });
-            trackingCancelButton.setOnAction(e -> window.setScene(secondScene));
+            trackingCancleButton.setOnAction(e -> window.setScene(secondScene));
 
             layout.add(trackingTitle, 0,0,2,1);
             layout.add(trackingTextField,0,1,2,1);
             layout.add(trackingEnterButton,0,2);
-            layout.add(trackingCancelButton,1,2);
+            layout.add(trackingCancleButton,1,2);
         }
     }
 
@@ -359,9 +380,25 @@ public class DeliveryApp extends Application{
                 String tempFName = fNameTextField.getText();
                 String tempLName = lNameTextField.getText();
                 String tempAddress = newAddressTextField.getText();
+                if(!tempUserName.equals("") && !DataHandler.isValidUsername(tempUserName)){
+                    DataHandler.createNewUser(tempUserName, tempPW, tempFName +" "+ tempLName, tempAddress);
+                    newUserTextField.setText("");
+                    newPWTextField.setText("");
+                    lNameTextField.setText("");
+                    fNameTextField.setText("");
+                    newAddressTextField.setText("");
+                    window.setScene(firstScene);
+                }
             });
 
-            returnBtn.setOnAction(e -> window.setScene(firstScene));
+            returnBtn.setOnAction(e -> {
+                newUserTextField.setText("");
+                newPWTextField.setText("");
+                lNameTextField.setText("");
+                fNameTextField.setText("");
+                newAddressTextField.setText("");
+                window.setScene(firstScene);
+            });
 
             creBtn.setAlignment(Pos.BOTTOM_RIGHT);
             creBtn.getChildren().add(createBtn);
@@ -408,7 +445,7 @@ public class DeliveryApp extends Application{
     	Label statusLabel;
     	TextField statusTextField;
     	Label tracking;
-    	Label trackingTextField;
+    	Label trackingLabel;
     	Button enterBtn;
     	HBox eBtn;
     	Button cancelBtn;
@@ -421,7 +458,7 @@ public class DeliveryApp extends Application{
             title = new Text("Add Package");
             receivingUser = new Label("Receiving User:");
             receiverTextField = new TextField();
-            itemLabel = new Label("Receiving User:");
+            itemLabel = new Label("Items:");
             itemTextField = new TextField();
             senderLabel = new Label("Sender:");
             senderTextField = new TextField();
@@ -434,19 +471,31 @@ public class DeliveryApp extends Application{
             statusLabel = new Label("Current Status:");
             statusTextField = new TextField();
             tracking = new Label("Tracking #:");
-            trackingTextField = new Label("test");
+            trackingLabel = new Label(DataHandler.getNextPackageID());
             enterBtn = new Button("Enter");
             eBtn = new HBox(5);
             cancelBtn = new Button("Cancel");
             cBtn = new HBox(5);
-            
+
             title.setFont(Font.font("Georgia",25));
-            /*
+            
             enterBtn.setOnAction(e -> {
-            	
+            	String user = receiverTextField.getText();
+                String items = itemTextField.getText();
+                String sender = senderTextField.getText();
+                String mailtype = mailTextField.getText();
+                String shippingDate = shippingTextField.getText();
+                String deliveryDate = deliveryTextField.getText();
+                String currentStatus = statusTextField.getText();
+                DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus);
+                clearTextFields();
             });
-            */
-            cancelBtn.setOnAction(e -> window.setScene(firstScene));
+            
+            cancelBtn.setOnAction(e -> {
+                clearTextFields();
+                window.setScene(firstScene);
+            
+            });
             
             eBtn.setAlignment(Pos.BOTTOM_RIGHT);
         	eBtn.getChildren().add(enterBtn);
@@ -475,9 +524,19 @@ public class DeliveryApp extends Application{
         	layout.add(statusLabel, 0, 7);
         	layout.add(statusTextField,1,7);
         	layout.add(tracking, 0, 8);
-        	layout.add(trackingTextField, 1, 8);
+        	layout.add(trackingLabel, 1, 8);
         	layout.add(eBtn, 1, 9);
         	layout.add(cBtn, 0, 9);
+        }
+
+        public void clearTextFields(){
+            receiverTextField.setText("");
+            itemTextField.setText("");
+            senderTextField.setText("");
+            mailTextField.setText("");
+            shippingTextField.setText("");
+            deliveryTextField.setText("");
+            statusTextField.setText("");
         }
 
     }

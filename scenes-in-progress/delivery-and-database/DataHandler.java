@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "3821";
+            String password = "209539352";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -21,35 +21,24 @@ public class DataHandler{
             + "password VARCHAR(128),"
             + "name VARCHAR(128),"
             + "address VARCHAR(128));";
-
-            String createMailtypeTable = "CREATE TABLE IF NOT EXISTS Mailtype("
-            + "name VARCHAR(128) PRIMARY KEY NOT NULL,"
-            + "description VARCHAR(1280));";
             
             String createPackageTable = "CREATE TABLE IF NOT EXISTS Package("
             + "id INT AUTO_INCREMENT PRIMARY KEY,"
-            + "name VARCHAR(128),"
             + "items VARCHAR(128),"
             + "sender VARCHAR(128),"
-            + "user VARCHAR(128) NOT NULL,"
+            + "user VARCHAR(128),"
             + "mailtype VARCHAR(128),"
             + "shippingDate DATE,"
             + "deliveryDate DATE,"
             + "currentStatus VARCHAR(128),"
-            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE,"
-            + "FOREIGN KEY(mailtype) REFERENCES Mailtype(name) ON UPDATE CASCADE);"; 
+            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE);"; 
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
 
-            String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=12345678;";
-
-            String insertStandardMail = "INSERT IGNORE INTO Mailtype VALUES(\"Standard Mail\", \"Standard Mail is less expensive but it takes a little while to get anywhere. Anything can be shipped with parcel post.\");";
-            String insertExpressMail = "INSERT IGNORE INTO Mailtype VALUES(\"Express Mail\", \"Express mail is not frequently used because it is more expensive but may be used for urgent deliveries. This option offers overnight and flat rate envelopes.\");";
-            String insertFirstClassMail = "INSERT IGNORE INTO Mailtype VALUES(\"First Class Mail\", \"First class mail is an inexpensive way to send any item that weighs 13 ounces or less. This includes mail such as greeting cards and regular stamped mail.\");";
-            String insertPriorityMail = "INSERT IGNORE INTO Mailtype VALUES(\"Priority Mail\", \"The starting rate for Priority mail is no less than five dollars. Any item can be shipped this way to ensure fast delivery, generally within 2-3 days.\");";
+            String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
             
             String insertAdmin = "INSERT IGNORE INTO ADMIN VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
 
@@ -63,17 +52,13 @@ public class DataHandler{
 
             statement.executeUpdate(createUserTable);
             statement.executeUpdate(createAdminTable);
-            statement.executeUpdate(createMailtypeTable);
             statement.executeUpdate(createPackageTable);
             statement.executeUpdate(alterPackageTable);
-            statement.executeUpdate(insertStandardMail);
-            statement.executeUpdate(insertExpressMail);
-            statement.executeUpdate(insertFirstClassMail);
-            statement.executeUpdate(insertPriorityMail);
             statement.executeUpdate(insertAdmin);
 
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
-            //createNewPackage("Package 1","Red Dress, Nintendo Switch", "1234 Long St Ave", "jconnor", "Standard Mail","2019-03-12","2019-03-25","Delivered");
+            createNewUser("person", "password", "Generic Person", "Generic Address");
+            //createNewPackage("Red Dress, Nintendo Switch", "1234 Long St Ave", "jconnor", "Standard Mail","2019-03-12","2019-03-25","Delivered");
             
         }catch(Exception expt){
             expt.printStackTrace();
@@ -107,6 +92,8 @@ public class DataHandler{
     }
 
     public static void createNewUser(String username, String password, String name, String address){
+            if(username.equals(""))
+                return;
             try{
                 String insertNewUser = "INSERT IGNORE INTO User VALUES(\"" + username + "\",\"" + password + "\",\"" + name + "\",\"" + address + "\");";
                 statement.executeUpdate(insertNewUser);
@@ -117,6 +104,10 @@ public class DataHandler{
     }
 
     public static boolean isValidUsername(String username){
+        if(isValidAdminName(username))
+            return true;
+        if(username.equals(""))
+            return false;
         try{
             int numberOfUsernames = 0;
             String countUsernames = "SELECT COUNT(1) FROM User WHERE username=\"" + username + "\";";
@@ -164,9 +155,9 @@ public class DataHandler{
     }
 
     //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
-    public static void createNewPackage(String name, String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
+    public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
         try{
-            String createPackageQuery = "INSERT IGNORE INTO Package(name,items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus) VALUES(\"" +name+ "\",\"" +items+ "\",\"" +senderAddress+ "\",\"" +username+ "\",\"" +mailtype+ "\",\"" +shippingDate+ "\",\"" +deliveryDate+ "\",\"" +currentStatus+ "\");";   
+            String createPackageQuery = "INSERT IGNORE INTO Package(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus) VALUES(\"" +items+ "\",\"" +senderAddress+ "\",\"" +username+ "\",\"" +mailtype+ "\",\"" +shippingDate+ "\",\"" +deliveryDate+ "\",\"" +currentStatus+ "\");";   
             statement.executeUpdate(createPackageQuery);
 
         }catch(Exception expt){
@@ -176,6 +167,8 @@ public class DataHandler{
 
     //packageID is a string, but must be convertible to an int
     public static boolean isValidPackageID(String packageID){
+        if(packageID.equals(""))
+            return false;
         try{
             int numberOfPackages = 0;
             String countPackages = "SELECT COUNT(1) FROM Package WHERE id=" +packageID+ ";";
@@ -192,26 +185,6 @@ public class DataHandler{
             expt.printStackTrace();
         }
         return false;
-    }
-
-    public static String getPackageName(String packageID){
-        try{
-            String name = "";
-            String selectPackageNameQuery = "SELECT name FROM Package WHERE id=" +packageID+ ";";
-            ResultSet nameInfo = statement.executeQuery(selectPackageNameQuery);
-
-            if(nameInfo.next())
-                name = nameInfo.getString("name");
-
-                nameInfo.close();
-                return name;
-            
-
-        }catch(Exception expt){
-            expt.printStackTrace();
-        }
-
-        return "";
     }
 
     public static ArrayList<String> getListOfPackages(String username){
@@ -235,6 +208,9 @@ public class DataHandler{
     //name,items,senderAddress, mailtype, shippingDate, deliveryDate, currentStatus
     public static String [] getPackageDetails(String packageID){
         String [] packageDetails = {"","","","","","",""};
+
+        if(packageID.equals(""))
+            return packageDetails;
         try{
             String selectPackage = "SELECT * FROM Package WHERE id=" +packageID+ ";";
             ResultSet packageInfo = statement.executeQuery(selectPackage);
@@ -257,10 +233,12 @@ public class DataHandler{
         return packageDetails;
     }
 
-    //true if item is added, false if user already has item on their account
+    
     public static void addPackageForUser(String username, String packageID){
+        if(packageID.equals(""))
+            return;
         try{
-            String addPackage = "INSERT IGNORE INTO Package(user) VALUES(\"" +username+ "\") WHERE id=" +packageID+ ";";
+            String addPackage = "UPDATE Package SET user=\"" +username+ "\" WHERE id=" +packageID+ ";";
             
             statement.executeUpdate(addPackage);
 
@@ -285,6 +263,46 @@ public class DataHandler{
             expt.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean isValidAdminName(String username){
+        if(username.equals(""))
+            return false;
+        try{
+            int numberOfUsernames = 0;
+            String countUsernames = "SELECT COUNT(1) FROM Admin WHERE username=\"" + username + "\";";
+            ResultSet countInfo = statement.executeQuery(countUsernames);
+
+            if(countInfo.next()){
+                numberOfUsernames = countInfo.getInt("COUNT(1)");
+            }
+
+            return numberOfUsernames > 0;
+            
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String getNextPackageID(){
+        int lastPackageID = 0;
+        try{
+            String selectLastPackageID = "SELECT id FROM Package ORDER BY id DESC LIMIT 1";
+            ResultSet packageInfo = statement.executeQuery(selectLastPackageID);
+
+            if(packageInfo.next())
+                lastPackageID = packageInfo.getInt("id");
+            
+            packageInfo.close();
+
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+        if(lastPackageID == 0)
+            return 123456789 + "";
+        else
+            return (lastPackageID + 1) + "";
     }
 
     public static void closeEverything(){
