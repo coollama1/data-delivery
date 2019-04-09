@@ -2,7 +2,6 @@ import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.*;
@@ -25,7 +24,7 @@ public class DeliveryApp extends Application{
     SixthScene sixthScene;
     SeventhScene seventhScene;
 
-    String curerntUsername;
+    String currentUsername;
     String currentAdmin;
     String currentPackageID = "123456789";
     ObservableList<String> listOfPackageIDs;
@@ -88,7 +87,7 @@ public class DeliveryApp extends Application{
                 String tempUsername = userTextField.getText();
                 String tempPassword = pwTextField.getText();
                 if(DataHandler.isValidUser(tempUsername,tempPassword)){
-                    curerntUsername = tempUsername;
+                    currentUsername = tempUsername;
                     userTextField.setText("");
                     pwTextField.setText("");
                     secondScene = new SecondScene();
@@ -132,6 +131,7 @@ public class DeliveryApp extends Application{
         Button editPersonalInfoButton;
         Button viewPackageDetailsButton;
         Button addPackageButton;
+        Button logoutButton;
         ObservableList<String> listOfPack;
         ListView<String> listView;
         
@@ -139,22 +139,31 @@ public class DeliveryApp extends Application{
             super(new GridPane(),300,400);
 
             layout = (GridPane)this.getRoot();
-
-            listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
+            listOfPack = FXCollections.observableArrayList(DataHandler.getListOfPackages(currentUsername));
             listView = new ListView<>(listOfPack);
             
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
+            logoutButton = new Button("Logout");
             Label Pre_name = new Label("Name:");
             Label Pre_addr = new Label("Address:");
             Label packList = new Label("Mail/Packages");
 
             packList.setFont(Font.font("Segoe UI", 15));
-            
+
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
-            viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
+
+            viewPackageDetailsButton.setOnAction(e ->
+            {
+            currentPackageID = listView.getSelectionModel().getSelectedItem().toString();
+            //System.out.println(listView.getSelectionModel().getSelectedItem().toString()); //test code
+            window.setScene(fourthScene);
+            });
+
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
+
+            logoutButton.setOnAction(e -> window.setScene(firstScene));
 
             listView.setPrefWidth(300);
             listView.setPrefHeight(400);
@@ -164,10 +173,12 @@ public class DeliveryApp extends Application{
             layout.setVgap(10);
 
             layout.setPadding(new Insets(20,25,25,25));
-            layout.add(listView,0,5);
-            layout.add(editPersonalInfoButton,0,3);
+
+            layout.add(listView,0,5,2,1);
+            layout.add(editPersonalInfoButton,0,3,2,1);
             layout.add(viewPackageDetailsButton,0,6);
-            layout.add(addPackageButton,0,7);
+            layout.add(logoutButton,0,8);
+            layout.add(addPackageButton,1,6);
             layout.add(Pre_name,0,0);
             layout.add(Pre_addr,0,2);
             layout.add(packList,0,4);
@@ -212,7 +223,7 @@ public class DeliveryApp extends Application{
             cnclBtn.getChildren().add(cancelBtn);
 
             saveBtn.setOnAction(e -> {
-                DataHandler.updatePersonalInfo(curerntUsername, newFTextField.getText() +" "+ newLTextField.getText(), newAddressField.getText());
+                DataHandler.updatePersonalInfo(currentUsername, newFTextField.getText() +" "+ newLTextField.getText(), newAddressField.getText());
                 secondScene = new SecondScene();
                 window.setScene(secondScene);
             });
@@ -220,7 +231,7 @@ public class DeliveryApp extends Application{
                 window.setScene(secondScene);
             });
 
-            layout.setAlignment(Pos.CENTER);
+            layout.setAlignment(Pos.BASELINE_CENTER);
             layout.setHgap(10);
             layout.setVgap(10);
             layout.setPadding(new Insets(25, 25, 25, 25));
@@ -338,7 +349,7 @@ public class DeliveryApp extends Application{
             trackingEnterButton.setOnAction(e -> {
                 String trackingNumber = trackingTextField.getText();
                 if(DataHandler.isValidPackageID(trackingNumber)){
-                    DataHandler.addPackageForUser(curerntUsername,trackingNumber);
+                    DataHandler.addPackageForUser(currentUsername,trackingNumber);
                     trackingTextField.setText("");
                     secondScene = new SecondScene();
                     window.setScene(secondScene);
@@ -471,7 +482,7 @@ public class DeliveryApp extends Application{
     	HBox cBtn;
     	
         public SeventhScene(){
-            super(new GridPane(),400,530);
+            super(new GridPane(),300,500);
             
             layout = (GridPane)this.getRoot();
             title = new Text("Add Package");
@@ -496,7 +507,7 @@ public class DeliveryApp extends Application{
             cancelBtn = new Button("Cancel");
             cBtn = new HBox(5);
 
-            title.setFont(Font.font("Georgia",25));
+            title.setFont(Font.font("Segoe UI Bold",25));
             
             enterBtn.setOnAction(e -> {
             	String user = receiverTextField.getText();
@@ -519,7 +530,7 @@ public class DeliveryApp extends Application{
             eBtn.setAlignment(Pos.BOTTOM_RIGHT);
         	eBtn.getChildren().add(enterBtn);
         	
-        	cBtn.setAlignment(Pos.BOTTOM_RIGHT);
+        	cBtn.setAlignment(Pos.BOTTOM_LEFT);
         	cBtn.getChildren().add(cancelBtn);
         	
         	layout.setAlignment(Pos.BASELINE_LEFT);
