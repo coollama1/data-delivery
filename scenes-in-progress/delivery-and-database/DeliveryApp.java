@@ -27,13 +27,14 @@ public class DeliveryApp extends Application{
 
     String curerntUsername;
     String currentAdmin;
-    String currentPackageID;
+    String currentPackageID = "123456789";
     ObservableList<String> listOfPackageIDs;
     
     public static void main(String [] args){
         launch(args);
     }
 
+    @Override
     public void start(Stage stage){
         window = stage;
 
@@ -258,6 +259,8 @@ public class DeliveryApp extends Application{
         public FourthScene(){
             super(new GridPane(),350,350);
 
+            String [] itemDetails = DataHandler.getPackageDetails(currentPackageID);
+
             layout = (GridPane)this.getRoot();
             item = new Label("Items:");
             sender = new Label("Sender:");
@@ -266,13 +269,13 @@ public class DeliveryApp extends Application{
             shipDate = new Label("Shipping Date:");
             deliverDate = new Label("Delivery Date:");
             currentStatus = new Label("Current Status:");
-            itemOutput = new Label();
-            senderOutput = new Label();
-            receiverOutput = new Label();
-            mailOutput = new Label();
-            shipOutput = new Label();
-            deliverOutput = new Label();
-            currentOutput = new Label();
+            itemOutput = new Label(itemDetails[0]);
+            senderOutput = new Label(itemDetails[1]);
+            receiverOutput = new Label(DataHandler.getPersonalInfo(itemDetails[2])[1]);
+            mailOutput = new Label(itemDetails[3]);
+            shipOutput = new Label(itemDetails[4]);
+            deliverOutput = new Label(itemDetails[5]);
+            currentOutput = new Label(itemDetails[6]);
 
             backBtn = new Button("Back");
             bBtn = new HBox(5);
