@@ -24,7 +24,7 @@ public class DeliveryApp extends Application{
     SixthScene sixthScene;
     SeventhScene seventhScene;
 
-    String curerntUsername;
+    String currentUsername;
     String currentAdmin;
     String currentPackageID = "123456789";
     ObservableList<String> listOfPackageIDs;
@@ -87,7 +87,7 @@ public class DeliveryApp extends Application{
                 String tempUsername = userTextField.getText();
                 String tempPassword = pwTextField.getText();
                 if(DataHandler.isValidUser(tempUsername,tempPassword)){
-                    curerntUsername = tempUsername;
+                    currentUsername = tempUsername;
                     userTextField.setText("");
                     pwTextField.setText("");
                     secondScene = new SecondScene();
@@ -131,35 +131,47 @@ public class DeliveryApp extends Application{
         Button editPersonalInfoButton;
         Button viewPackageDetailsButton;
         Button addPackageButton;
+        Button logoutButton;
         ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),550,400);
+            super(new GridPane(),450,400);
 
             layout = (GridPane)this.getRoot();
-            listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
+            listOfPack = FXCollections.observableArrayList(DataHandler.getListOfPackages(currentUsername));
             listView = new ListView<>(listOfPack);
             
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
+            logoutButton = new Button("Logout");
             Label Pre_name = new Label("   Name:");
             Label Pre_addr = new Label("Address:");
-            Label packList = new Label("Mail/Packages");
+            Label packList = new Label("Mail/Packages Tracking Number");
             
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
-            viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
+            
+            viewPackageDetailsButton.setOnAction(e -> 
+            {
+            currentPackageID = listView.getSelectionModel().getSelectedItem().toString();
+            //System.out.println(listView.getSelectionModel().getSelectedItem().toString()); //test code
+            window.setScene(fourthScene);
+            });
+            
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
+            
+            logoutButton.setOnAction(e -> window.setScene(firstScene));
 
             listView.setPrefWidth(250);
             listView.setPrefHeight(400);
             listView.setOrientation(Orientation.VERTICAL);
-            
+                
             layout.add(listView,0,5);
             layout.add(editPersonalInfoButton,0,3);
             layout.add(viewPackageDetailsButton,0,6);
             layout.add(addPackageButton,1,6);
+            layout.add(logoutButton,2,0);
             layout.add(Pre_name,0,0);
             layout.add(Pre_addr,0,2);
             layout.add(packList,0,4);
@@ -204,7 +216,7 @@ public class DeliveryApp extends Application{
             cnclBtn.getChildren().add(cancelBtn);
 
             saveBtn.setOnAction(e -> {
-                DataHandler.updatePersonalInfo(curerntUsername, newFTextField.getText() +" "+ newLTextField.getText(), newAddressField.getText());
+                DataHandler.updatePersonalInfo(currentUsername, newFTextField.getText() +" "+ newLTextField.getText(), newAddressField.getText());
                 secondScene = new SecondScene();
                 window.setScene(secondScene);
             });
@@ -317,7 +329,7 @@ public class DeliveryApp extends Application{
             errorMessage = new Text("Wrong Number");
             trackingTextField = new TextField();
             trackingEnterButton = new Button("Enter");
-            trackingCancleButton = new Button("Cancle");
+            trackingCancleButton = new Button("Cancel");
 
             trackingTitle.setFont(new Font("georgia", 20));
             errorMessage.setFill(Color.CRIMSON);
@@ -330,7 +342,7 @@ public class DeliveryApp extends Application{
             trackingEnterButton.setOnAction(e -> {
                 String trackingNumber = trackingTextField.getText();
                 if(DataHandler.isValidPackageID(trackingNumber)){
-                    DataHandler.addPackageForUser(curerntUsername,trackingNumber);
+                    DataHandler.addPackageForUser(currentUsername,trackingNumber);
                     trackingTextField.setText("");
                     secondScene = new SecondScene();
                     window.setScene(secondScene);
