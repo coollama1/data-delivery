@@ -141,15 +141,19 @@ public class DeliveryApp extends Application{
         Label preName;
         Label preAddr;
         Label packList;
+        Label nameLabel;
+        Label addressLabel;
+        String [] personalInfo;
         ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),285,400);
+            super(new GridPane(),300,400);
 
             layout = (GridPane)this.getRoot();
             listOfPack = FXCollections.observableArrayList(DataHandler.getListOfPackages(currentUsername));
             listView = new ListView<>(listOfPack);
+            personalInfo = DataHandler.getPersonalInfo(currentUsername);
             
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("Package Details");
@@ -158,6 +162,8 @@ public class DeliveryApp extends Application{
             preName = new Label("Name:");
             preAddr = new Label("Address:");
             packList = new Label("Mail/Packages");
+            nameLabel = new Label(personalInfo[0]);
+            addressLabel = new Label(personalInfo[1]);
 
             packList.setFont(Font.font("Segoe UI", 15));
 
@@ -189,7 +195,9 @@ public class DeliveryApp extends Application{
             layout.add(logoutButton,0,8);
             layout.add(addPackageButton,1,6);
             layout.add(preName,0,0);
+            layout.add(nameLabel,1,0);
             layout.add(preAddr,0,2);
+            layout.add(addressLabel,1,2);
             layout.add(packList,0,4);
         }
     }
@@ -209,7 +217,7 @@ public class DeliveryApp extends Application{
         HBox cnclBtn;
 
         public ThirdScene(){
-            super(new GridPane(),300,200);
+            super(new GridPane(),300,220);
 
             layout = (GridPane)this.getRoot();
             changeInfoTitle = new Text("Change Personal Info");
@@ -341,7 +349,7 @@ public class DeliveryApp extends Application{
             super(new GridPane(),275,150);
             
             layout = (GridPane)this.getRoot();
-            trackingTitle = new Text("Enter tracking number:");
+            trackingTitle = new Text("Enter tracking number");
             errorMessage = new Text("Wrong number.");
             trackingTextField = new TextField();
             trackingEnterButton = new Button("Enter");
