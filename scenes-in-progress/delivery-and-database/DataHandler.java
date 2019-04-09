@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "209539352";
+            String password = "3821";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 

@@ -2,6 +2,7 @@ import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.*;
@@ -66,7 +67,7 @@ public class DeliveryApp extends Application{
         HBox sBtn;
 
         public FirstScene(){
-            super(new GridPane(),400,250);
+            super(new GridPane(),375,200);
 
             layout = (GridPane)this.getRoot();
             window.setTitle("Data Deliverers");
@@ -80,7 +81,7 @@ public class DeliveryApp extends Application{
             lBtn = new HBox(5);
             sBtn = new HBox(5);
 
-            sceneTitle.setFont(Font.font("Georgia",25));
+            sceneTitle.setFont(Font.font("Segoe UI Bold",25));
 
             loginBtn.setOnAction(e -> {
                 String tempUsername = userTextField.getText();
@@ -134,31 +135,38 @@ public class DeliveryApp extends Application{
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),550,400);
+            super(new GridPane(),300,400);
 
             layout = (GridPane)this.getRoot();
+
             listOfPack = FXCollections.observableArrayList("package 1","package 2","package 3");
             listView = new ListView<>(listOfPack);
             
             editPersonalInfoButton = new Button("Edit Personal Info");
             viewPackageDetailsButton = new Button("View Package Details");
             addPackageButton = new Button ("Add Package");
-            Label Pre_name = new Label("   Name:");
+            Label Pre_name = new Label("Name:");
             Label Pre_addr = new Label("Address:");
             Label packList = new Label("Mail/Packages");
+
+            packList.setFont(Font.font("Segoe UI", 15));
             
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
             viewPackageDetailsButton.setOnAction(e -> window.setScene(fourthScene));
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
 
-            listView.setPrefWidth(250);
+            listView.setPrefWidth(300);
             listView.setPrefHeight(400);
             listView.setOrientation(Orientation.VERTICAL);
-            
+
+            layout.setHgap(10);
+            layout.setVgap(10);
+
+            layout.setPadding(new Insets(20,25,25,25));
             layout.add(listView,0,5);
             layout.add(editPersonalInfoButton,0,3);
             layout.add(viewPackageDetailsButton,0,6);
-            layout.add(addPackageButton,1,6);
+            layout.add(addPackageButton,0,7);
             layout.add(Pre_name,0,0);
             layout.add(Pre_addr,0,2);
             layout.add(packList,0,4);
@@ -180,7 +188,7 @@ public class DeliveryApp extends Application{
         HBox cnclBtn;
 
         public ThirdScene(){
-            super(new GridPane(),450,280);
+            super(new GridPane(),300,200);
 
             layout = (GridPane)this.getRoot();
             changeInfoTitle = new Text("Change Personal Info");
@@ -195,9 +203,9 @@ public class DeliveryApp extends Application{
             cancelBtn = new Button("Cancel");
             cnclBtn = new HBox(5);
 
-            changeInfoTitle.setFont(Font.font("Georgia",20));
+            changeInfoTitle.setFont(Font.font("Segoe UI Bold",23));
 
-            saveBtn.setAlignment(Pos.BOTTOM_RIGHT);
+            sveBtn.setAlignment(Pos.BOTTOM_RIGHT);
             cnclBtn.setAlignment(Pos.BOTTOM_LEFT);
             sveBtn.getChildren().add(saveBtn);
             cnclBtn.getChildren().add(cancelBtn);
@@ -211,20 +219,20 @@ public class DeliveryApp extends Application{
                 window.setScene(secondScene);
             });
 
-            layout.setAlignment(Pos.BASELINE_CENTER);
+            layout.setAlignment(Pos.CENTER);
             layout.setHgap(10);
             layout.setVgap(10);
             layout.setPadding(new Insets(25, 25, 25, 25));
 
-            layout.add(changeInfoTitle,0,0);
+            layout.add(changeInfoTitle,0,0,2,1);
             layout.add(newFirstName, 0, 1);
-            layout.add(newFTextField,1,1);
+            layout.add(newFTextField,1,1,2,1);
             layout.add(newLastName, 0, 2);
-            layout.add(newLTextField, 1, 2);
+            layout.add(newLTextField, 1, 2,2,1);
             layout.add(changeAddress,0,3);
-            layout.add(newAddressField,1,3);
-            layout.add(cnclBtn,0,7);
-            layout.add(sveBtn,1,7);
+            layout.add(newAddressField,1,3,2,1);
+            layout.add(cnclBtn,0,5);
+            layout.add(sveBtn,2,5);
         }
     }
 
@@ -248,7 +256,7 @@ public class DeliveryApp extends Application{
         HBox bBtn;
 
         public FourthScene(){
-            super(new GridPane(),400,400);
+            super(new GridPane(),350,350);
 
             layout = (GridPane)this.getRoot();
             item = new Label("Items:");
@@ -278,7 +286,7 @@ public class DeliveryApp extends Application{
             layout.setAlignment(Pos.BASELINE_LEFT);
             layout.setHgap(20);
             layout.setVgap(20);
-            layout.setPadding(new Insets(25, 25, 25, 25));
+            layout.setPadding(new Insets(10, 25, 25, 25));
             
             layout.add(item, 0, 1);
             layout.add(sender, 0, 2);
@@ -307,16 +315,16 @@ public class DeliveryApp extends Application{
         Button trackingCancleButton;
         
         public FifthScene(){
-            super(new GridPane(),350,180);
+            super(new GridPane(),275,150);
             
             layout = (GridPane)this.getRoot();
-            trackingTitle = new Text("Enter Tracking Number");
-            errorMessage = new Text("Wrong Number");
+            trackingTitle = new Text("Enter tracking number:");
+            errorMessage = new Text("Wrong number.");
             trackingTextField = new TextField();
             trackingEnterButton = new Button("Enter");
-            trackingCancleButton = new Button("Cancle");
+            trackingCancleButton = new Button("Cancel");
 
-            trackingTitle.setFont(new Font("georgia", 20));
+            trackingTitle.setFont(new Font("Segoe UI", 20));
             errorMessage.setFill(Color.CRIMSON);
             trackingTextField.setPrefWidth(100);
             layout.setAlignment(Pos.BASELINE_CENTER);
