@@ -15,19 +15,19 @@ import javafx.scene.control.*;
 
 public class DeliveryApp extends Application{
 	
-	Stage window;
-    FirstScene firstScene;
-    SecondScene secondScene;
-    ThirdScene thirdScene;
-    FourthScene fourthScene;
-    FifthScene fifthScene;
-    SixthScene sixthScene;
-    SeventhScene seventhScene;
+	private Stage window;
+    private FirstScene firstScene;
+    private SecondScene secondScene;
+    private ThirdScene thirdScene;
+    private FourthScene fourthScene;
+    private FifthScene fifthScene;
+    private SixthScene sixthScene;
+    private SeventhScene seventhScene;
 
-    String currentUsername;
-    String currentAdmin;
-    String currentPackageID = "123456789";
-    ObservableList<String> listOfPackageIDs;
+    private String currentUsername;
+    private String currentAdmin;
+    private String currentPackageID;
+    private ObservableList<String> listOfPackageIDs;
     
     public static void main(String [] args){
         launch(args);
@@ -37,14 +37,7 @@ public class DeliveryApp extends Application{
     public void start(Stage stage){
         window = stage;
 
-    	firstScene = new FirstScene();
-        secondScene = new SecondScene();
-        thirdScene = new ThirdScene();
-        fourthScene = new FourthScene();
-        fifthScene = new FifthScene();
-        sixthScene = new SixthScene();
-        seventhScene = new SeventhScene();
-
+        initilizeValues();
         window.setScene(firstScene);
         window.show();
     }
@@ -52,6 +45,19 @@ public class DeliveryApp extends Application{
     @Override
     public void stop(){
         DataHandler.closeEverything();
+    }
+
+    public void initilizeValues(){
+        currentUsername = "";
+        currentAdmin = "";
+        currentPackageID = "0";
+    	firstScene = new FirstScene();
+        secondScene = new SecondScene();
+        thirdScene = new ThirdScene();
+        fourthScene = new FourthScene();
+        fifthScene = new FifthScene();
+        sixthScene = new SixthScene();
+        seventhScene = new SeventhScene();
     }
 
     class FirstScene extends Scene{
@@ -67,7 +73,7 @@ public class DeliveryApp extends Application{
         HBox sBtn;
 
         public FirstScene(){
-            super(new GridPane(),375,200);
+            super(new GridPane(),390,200);
 
             layout = (GridPane)this.getRoot();
             window.setTitle("Data Deliverers");
@@ -132,38 +138,41 @@ public class DeliveryApp extends Application{
         Button viewPackageDetailsButton;
         Button addPackageButton;
         Button logoutButton;
+        Label preName;
+        Label preAddr;
+        Label packList;
         ObservableList<String> listOfPack;
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),300,400);
+            super(new GridPane(),285,400);
 
             layout = (GridPane)this.getRoot();
             listOfPack = FXCollections.observableArrayList(DataHandler.getListOfPackages(currentUsername));
             listView = new ListView<>(listOfPack);
             
             editPersonalInfoButton = new Button("Edit Personal Info");
-            viewPackageDetailsButton = new Button("View Package Details");
+            viewPackageDetailsButton = new Button("Package Details");
             addPackageButton = new Button ("Add Package");
             logoutButton = new Button("Logout");
-            Label Pre_name = new Label("Name:");
-            Label Pre_addr = new Label("Address:");
-            Label packList = new Label("Mail/Packages");
+            preName = new Label("Name:");
+            preAddr = new Label("Address:");
+            packList = new Label("Mail/Packages");
 
             packList.setFont(Font.font("Segoe UI", 15));
 
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
-
-            viewPackageDetailsButton.setOnAction(e ->
-            {
-            currentPackageID = listView.getSelectionModel().getSelectedItem().toString();
-            //System.out.println(listView.getSelectionModel().getSelectedItem().toString()); //test code
-            window.setScene(fourthScene);
-            });
-
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
-
             logoutButton.setOnAction(e -> window.setScene(firstScene));
+
+            viewPackageDetailsButton.setOnAction(e ->{
+                if(listView.getSelectionModel().getSelectedItem() != null)
+                    currentPackageID = listView.getSelectionModel().getSelectedItem().toString();
+                if(DataHandler.isValidPackageID(currentPackageID)){
+                    fourthScene = new FourthScene();
+                    window.setScene(fourthScene);
+                }
+            });
 
             listView.setPrefWidth(300);
             listView.setPrefHeight(400);
@@ -179,8 +188,8 @@ public class DeliveryApp extends Application{
             layout.add(viewPackageDetailsButton,0,6);
             layout.add(logoutButton,0,8);
             layout.add(addPackageButton,1,6);
-            layout.add(Pre_name,0,0);
-            layout.add(Pre_addr,0,2);
+            layout.add(preName,0,0);
+            layout.add(preAddr,0,2);
             layout.add(packList,0,4);
         }
     }
@@ -482,7 +491,7 @@ public class DeliveryApp extends Application{
     	HBox cBtn;
     	
         public SeventhScene(){
-            super(new GridPane(),300,500);
+            super(new GridPane(),350,500);
             
             layout = (GridPane)this.getRoot();
             title = new Text("Add Package");
@@ -567,6 +576,7 @@ public class DeliveryApp extends Application{
             shippingTextField.setText("");
             deliveryTextField.setText("");
             statusTextField.setText("");
+            trackingLabel.setText(DataHandler.getNextPackageID());
         }
 
     }

@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "3821";
+            String password = "209539352";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -41,7 +41,7 @@ public class DataHandler{
             String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
             
             String insertAdmin = "INSERT IGNORE INTO Admin VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
-            String insertAdmin0 = "INSERT IGNORE INTO ADMIN VALUES(\"steinsgate\",\"database\", \"Dai\");";
+            String insertSecondAdmin = "INSERT IGNORE INTO Admin VALUES(\"steinsgate\",\"database\", \"Dai\");";
 
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
@@ -56,7 +56,7 @@ public class DataHandler{
             statement.executeUpdate(createPackageTable);
             statement.executeUpdate(alterPackageTable);
             statement.executeUpdate(insertAdmin);
-            statement.executeUpdate(insertAdmin0);
+            statement.executeUpdate(insertSecondAdmin);
 
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
             createNewUser("person", "password", "Generic Person", "Generic Address");
