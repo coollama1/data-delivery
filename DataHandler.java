@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "209539352";
+            String password = "cody1234";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -37,6 +37,8 @@ public class DataHandler{
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
+            
+            String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM user;";
 
             String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
             
@@ -57,6 +59,7 @@ public class DataHandler{
             statement.executeUpdate(alterPackageTable);
             statement.executeUpdate(insertAdmin);
             statement.executeUpdate(insertSecondAdmin);
+            statement.executeUpdate(createUserInfoView);
 
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
             createNewUser("person", "password", "Generic Person", "Generic Address");
@@ -73,7 +76,7 @@ public class DataHandler{
             String [] personalInfo = {"",""};
             
             try{
-                String selectUserInfo = "SELECT name,address FROM User WHERE username=\"" +username+ "\";";
+                String selectUserInfo = "SELECT * FROM user_info WHERE username=\"" +username+ "\";";
 
                 ResultSet userInfo = statement.executeQuery(selectUserInfo);
 
