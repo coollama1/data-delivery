@@ -88,6 +88,8 @@ public class DeliveryApp extends Application{
             sBtn = new HBox(5);
 
             sceneTitle.setFont(Font.font("Segoe UI Bold",25));
+            userName.setFont(Font.font("Segoe UI",14));
+            pw.setFont(Font.font("Segoe UI",14));
 
             loginBtn.setOnAction(e -> {
                 String tempUsername = userTextField.getText();
@@ -114,7 +116,7 @@ public class DeliveryApp extends Application{
             lBtn.setAlignment(Pos.BOTTOM_RIGHT);
             lBtn.getChildren().add(loginBtn);
 
-            sBtn.setAlignment(Pos.BOTTOM_RIGHT);
+            sBtn.setAlignment(Pos.BOTTOM_LEFT);
             sBtn.getChildren().add(signUpBtn);
 
             layout.setAlignment(Pos.BASELINE_CENTER);
@@ -148,7 +150,7 @@ public class DeliveryApp extends Application{
         ListView<String> listView;
         
         public SecondScene(){
-            super(new GridPane(),300,400);
+            super(new GridPane(),350,400);
 
             layout = (GridPane)this.getRoot();
             listOfPack = FXCollections.observableArrayList(DataHandler.getListOfPackages(currentUsername));
@@ -166,6 +168,10 @@ public class DeliveryApp extends Application{
             addressLabel = new Label(personalInfo[1]);
 
             packList.setFont(Font.font("Segoe UI", 15));
+            preName.setFont(Font.font("Segoe UI",14));
+            preAddr.setFont(Font.font("Segoe UI",14));
+            nameLabel.setFont(Font.font("Segoe UI",14));
+            addressLabel.setFont(Font.font("Segoe UI",14));
 
             editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
@@ -189,16 +195,16 @@ public class DeliveryApp extends Application{
 
             layout.setPadding(new Insets(20,25,25,25));
 
-            layout.add(listView,0,5,2,1);
+            layout.add(listView,0,5,5,1);
             layout.add(editPersonalInfoButton,0,3,2,1);
-            layout.add(viewPackageDetailsButton,0,6);
-            layout.add(logoutButton,0,8);
-            layout.add(addPackageButton,1,6);
+            layout.add(viewPackageDetailsButton,0,6,2,1);
+            layout.add(logoutButton,0,8,2,1);
+            layout.add(addPackageButton,2,6);
             layout.add(preName,0,0);
-            layout.add(nameLabel,1,0);
+            layout.add(nameLabel,1,0,2,1);
             layout.add(preAddr,0,2);
-            layout.add(addressLabel,1,2);
-            layout.add(packList,0,4);
+            layout.add(addressLabel,1,2,2,1);
+            layout.add(packList,0,4,2,1);
         }
     }
 
@@ -233,6 +239,9 @@ public class DeliveryApp extends Application{
             cnclBtn = new HBox(5);
 
             changeInfoTitle.setFont(Font.font("Segoe UI Bold",23));
+            newFirstName.setFont(Font.font("Segoe UI",14));
+            newLastName.setFont(Font.font("Segoe UI",14));
+            changeAddress.setFont(Font.font("Segoe UI",14));
 
             sveBtn.setAlignment(Pos.BOTTOM_RIGHT);
             cnclBtn.setAlignment(Pos.BOTTOM_LEFT);
@@ -312,6 +321,21 @@ public class DeliveryApp extends Application{
             bBtn.getChildren().add(backBtn);
             layout.add(bBtn, 0, 8);
 
+            item.setFont(Font.font("Segoe UI",14));
+            sender.setFont(Font.font("Segoe UI",14));
+            receiver.setFont(Font.font("Segoe UI",14));
+            mailType.setFont(Font.font("Segoe UI",14));
+            shipDate.setFont(Font.font("Segoe UI",14));
+            deliverDate.setFont(Font.font("Segoe UI",14));
+            currentStatus.setFont(Font.font("Segoe UI",14));
+            itemOutput.setFont(Font.font("Segoe UI",14));
+            senderOutput.setFont(Font.font("Segoe UI",14));
+            receiverOutput.setFont(Font.font("Segoe UI",14));
+            mailOutput.setFont(Font.font("Segoe UI",14));
+            shipOutput.setFont(Font.font("Segoe UI",14));
+            deliverOutput.setFont(Font.font("Segoe UI",14));
+            currentOutput.setFont(Font.font("Segoe UI",14));
+
             backBtn.setOnAction(e -> window.setScene(secondScene));
 
             layout.setAlignment(Pos.BASELINE_LEFT);
@@ -356,6 +380,7 @@ public class DeliveryApp extends Application{
             trackingCancleButton = new Button("Cancel");
 
             trackingTitle.setFont(new Font("Segoe UI", 20));
+            errorMessage.setFont(Font.font("Segoe UI",14));
             errorMessage.setFill(Color.CRIMSON);
             trackingTextField.setPrefWidth(100);
             layout.setAlignment(Pos.BASELINE_CENTER);
@@ -400,7 +425,7 @@ public class DeliveryApp extends Application{
         HBox retBtn;
 
         public SixthScene(){
-            super(new GridPane(),350,450);
+            super(new GridPane(),300,425);
 
             layout = (GridPane)this.getRoot();
             signUpTitle = new Text("Sign Up");
@@ -420,6 +445,11 @@ public class DeliveryApp extends Application{
             retBtn = new HBox(5);
 
             signUpTitle.setFont(Font.font("Georgia",25));
+            newUserName.setFont(Font.font("Segoe UI",14));
+            newPW.setFont(Font.font("Segoe UI",14));
+            fName.setFont(Font.font("Segoe UI",14));
+            lName.setFont(Font.font("Segoe UI",14));
+            newAddress.setFont(Font.font("Segoe UI",14));
             
             createBtn.setOnAction(e -> {
                 String tempUserName = newUserTextField.getText();
@@ -453,24 +483,24 @@ public class DeliveryApp extends Application{
             retBtn.setAlignment(Pos.BOTTOM_LEFT);
             retBtn.getChildren().add(returnBtn);
 
-            layout.setAlignment(Pos.BASELINE_CENTER);
-            layout.setHgap(8);
-            layout.setVgap(8);
+            layout.setAlignment(Pos.BASELINE_LEFT);
+            layout.setHgap(9);
+            layout.setVgap(9);
             layout.setPadding(new Insets(25, 25, 25, 25));
             
             layout.add(signUpTitle,0,0);
             layout.add(newUserName, 0, 1);
-            layout.add(newUserTextField,0,2);
+            layout.add(newUserTextField,0,2,13,1);
             layout.add(newPW, 0, 3);
-            layout.add(newPWTextField,0,4);  
+            layout.add(newPWTextField,0,4,13,1);
             layout.add(fName, 0, 5);
-            layout.add(fNameTextField, 0, 6);
+            layout.add(fNameTextField, 0, 6,13,1);
             layout.add(lName, 0, 7);
-            layout.add(lNameTextField, 0, 8);
+            layout.add(lNameTextField, 0, 8,13,1);
             layout.add(newAddress, 0, 9);
-            layout.add(newAddressTextField, 0, 10);
+            layout.add(newAddressTextField, 0, 10,13,1);
             layout.add(retBtn, 0, 11);
-            layout.add(creBtn, 1, 11);
+            layout.add(creBtn, 12, 11);
         }
     }
 
@@ -499,7 +529,7 @@ public class DeliveryApp extends Application{
     	HBox cBtn;
     	
         public SeventhScene(){
-            super(new GridPane(),350,500);
+            super(new GridPane(),325,500);
             
             layout = (GridPane)this.getRoot();
             title = new Text("Add Package");
@@ -521,10 +551,19 @@ public class DeliveryApp extends Application{
             trackingLabel = new Label(DataHandler.getNextPackageID());
             enterBtn = new Button("Enter");
             eBtn = new HBox(5);
-            cancelBtn = new Button("Cancel");
+            cancelBtn = new Button("Back");
             cBtn = new HBox(5);
 
             title.setFont(Font.font("Segoe UI Bold",25));
+            receivingUser.setFont(Font.font("Segoe UI",14));
+            itemLabel.setFont(Font.font("Segoe UI",14));
+            senderLabel.setFont(Font.font("Segoe UI",14));
+            mailLabel.setFont(Font.font("Segoe UI",14));
+            shippingDate.setFont(Font.font("Segoe UI",14));
+            deliveryDate.setFont(Font.font("Segoe UI",14));
+            statusLabel.setFont(Font.font("Segoe UI",14));
+            tracking.setFont(Font.font("Segoe UI",14));
+            trackingLabel.setFont(Font.font("Segoe UI Bold",14));
             
             enterBtn.setOnAction(e -> {
             	String user = receiverTextField.getText();
@@ -550,12 +589,12 @@ public class DeliveryApp extends Application{
         	cBtn.setAlignment(Pos.BOTTOM_LEFT);
         	cBtn.getChildren().add(cancelBtn);
         	
-        	layout.setAlignment(Pos.BASELINE_LEFT);
+        	layout.setAlignment(Pos.BASELINE_CENTER);
         	layout.setHgap(15);
         	layout.setVgap(20);
         	layout.setPadding(new Insets(25, 25, 25, 25));
         	
-        	layout.add(title, 0, 0, 2, 1);
+        	layout.add(title, 0, 0,2,1);
         	layout.add(receivingUser, 0, 1);
         	layout.add(receiverTextField,1,1);
         	layout.add(itemLabel, 0, 2);
@@ -572,8 +611,8 @@ public class DeliveryApp extends Application{
         	layout.add(statusTextField,1,7);
         	layout.add(tracking, 0, 8);
         	layout.add(trackingLabel, 1, 8);
-        	layout.add(eBtn, 1, 9);
-        	layout.add(cBtn, 0, 9);
+        	layout.add(eBtn, 1, 10);
+        	layout.add(cBtn, 0, 10);
         }
 
         public void clearTextFields(){
