@@ -36,8 +36,8 @@ public class DeliveryApp extends Application{
     @Override
     public void start(Stage stage){
         window = stage;
-
         initilizeValues();
+
         window.setScene(firstScene);
         window.show();
     }
