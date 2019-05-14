@@ -308,11 +308,11 @@ public class DeliveryApp extends Application{
             currentStatus = new Label("Current Status:");
             itemOutput = new Label(itemDetails[0]);
             senderOutput = new Label(itemDetails[1]);
-            receiverOutput = new Label(DataHandler.getPersonalInfo(itemDetails[2])[1]);
             mailOutput = new Label(itemDetails[3]);
             shipOutput = new Label(itemDetails[4]);
             deliverOutput = new Label(itemDetails[5]);
             currentOutput = new Label(itemDetails[6]);
+            receiverOutput = new Label(itemDetails[7]);
 
             backBtn = new Button("Back");
             bBtn = new HBox(5);

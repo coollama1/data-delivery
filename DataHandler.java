@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "cody1234";
+            String password = "209539352";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -27,6 +27,7 @@ public class DataHandler{
             + "items VARCHAR(128),"
             + "sender VARCHAR(128),"
             + "user VARCHAR(128),"
+            + "deliveryAddress VARCHAR(128),"
             + "mailtype VARCHAR(128),"
             + "shippingDate DATE,"
             + "deliveryDate DATE,"
@@ -38,12 +39,13 @@ public class DataHandler{
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
             
-            String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM user;";
+            String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
             String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
             
             String insertAdmin = "INSERT IGNORE INTO Admin VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
             String insertSecondAdmin = "INSERT IGNORE INTO Admin VALUES(\"steinsgate\",\"database\", \"Dai\");";
+
 
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
@@ -61,10 +63,51 @@ public class DataHandler{
             statement.executeUpdate(insertSecondAdmin);
             statement.executeUpdate(createUserInfoView);
 
+            createProcedures();
+
             createNewUser("jconnor", "bestprofessor","John Connor", "City College of New York");
             createNewUser("person", "password", "Generic Person", "Generic Address");
             //createNewPackage("Red Dress, Nintendo Switch", "1234 Long St Ave", "jconnor", "Standard Mail","2019-03-12","2019-03-25","Delivered");
             
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+
+    }
+
+    private static void createProcedures(){
+        try{
+            String createNewUserProcedure = "CREATE PROCEDURE insert_user "
+            + "(In username char(128), In password char(128), In name char(128), In address char(128)) "
+            + "INSERT IGNORE INTO User VALUES(username,password,name,address)";
+
+            String createUpdateUserProcedure = "CREATE PROCEDURE update_user "
+            + "(In inputUsername char(128), In newName char(128), In newAddress char(128)) "
+            + "UPDATE User SET name=newName, address=newAddress WHERE username=inputUsername";
+
+            String createAddPackageProcedure = "CREATE PROCEDURE add_package_for_user "
+            + "(In inputPackageID int, In inputUsername char(128)) "
+            + "UPDATE Package SET user=inputUsername WHERE id=inputPackageID";
+
+            String createInsertPackageProcedure = "CREATE PROCEDURE insert_package "
+            + "(In inputItems char(128), In inputSender char(128), In inputUser char(128), In inputDeliveryAddress char(128),"
+            + "In inputMailtype char(128), In inputShippingDate char(128), In inputDeliveryDate char(128), In inputCurrentStatus char(128)) "
+            + "INSERT IGNORE INTO Package(items,sender,user,deliveryAddress,mailtype,shippingDate,deliveryDate,currentStatus) "
+            + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate,inputCurrentStatus) ";
+
+            String dropNewUserProcedure = "DROP PROCEDURE IF EXISTS insert_user";
+            String dropUpdateUserProcedure = "DROP PROCEDURE IF EXISTS update_user";
+            String dropAddPackageProcedure = "DROP PROCEDURE IF EXISTS add_package_for_user";
+            String dropInsertPackageProcedure = "DROP PROCEDURE IF EXISTS insert_package";
+
+            statement.executeUpdate(dropNewUserProcedure);
+            statement.executeUpdate(dropUpdateUserProcedure);
+            statement.executeUpdate(dropAddPackageProcedure);
+            statement.executeUpdate(dropInsertPackageProcedure);
+            statement.executeUpdate(createNewUserProcedure);
+            statement.executeUpdate(createUpdateUserProcedure);
+            statement.executeUpdate(createAddPackageProcedure);
+            statement.executeUpdate(createInsertPackageProcedure);
         }catch(Exception expt){
             expt.printStackTrace();
         }
@@ -100,8 +143,12 @@ public class DataHandler{
             if(username.equals(""))
                 return;
             try{
-                String insertNewUser = "INSERT IGNORE INTO User VALUES(\"" + username + "\",\"" + password + "\",\"" + name + "\",\"" + address + "\");";
-                statement.executeUpdate(insertNewUser);
+                PreparedStatement preparedStatement = connection.prepareStatement("CALL insert_user(?,?,?,?)");
+                preparedStatement.setString(1,username);
+                preparedStatement.setString(2,password);
+                preparedStatement.setString(3,name);
+                preparedStatement.setString(4,address);
+                preparedStatement.executeUpdate();
 
             }catch(Exception expt){
                 expt.printStackTrace();
@@ -151,8 +198,11 @@ public class DataHandler{
 
     public static void updatePersonalInfo(String username, String newName, String newAddress){
         try{
-            String updateQuery = "UPDATE User SET name=\"" +newName+ "\", address=\"" +newAddress+ "\" WHERE username=\"" +username+ "\";";
-            statement.executeUpdate(updateQuery);
+            PreparedStatement preparedStatement = connection.prepareStatement("CALL update_user(?,?,?)");
+            preparedStatement.setString(1,username);
+            preparedStatement.setString(2,newName);
+            preparedStatement.setString(3,newAddress);
+            preparedStatement.executeUpdate();
 
         }catch(Exception expt){
             expt.printStackTrace();
@@ -162,8 +212,18 @@ public class DataHandler{
     //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
     public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
         try{
-            String createPackageQuery = "INSERT IGNORE INTO Package(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus) VALUES(\"" +items+ "\",\"" +senderAddress+ "\",\"" +username+ "\",\"" +mailtype+ "\",\"" +shippingDate+ "\",\"" +deliveryDate+ "\",\"" +currentStatus+ "\");";   
-            statement.executeUpdate(createPackageQuery);
+            String deliveryAddress = getPersonalInfo(username)[1];
+            PreparedStatement preparedStatement = connection.prepareStatement("CALL insert_package(?,?,?,?,?,?,?,?)");
+            preparedStatement.setString(1,items);
+            preparedStatement.setString(2,senderAddress);
+            preparedStatement.setString(3,username);
+            preparedStatement.setString(4,deliveryAddress);
+            preparedStatement.setString(5,mailtype);
+            preparedStatement.setString(6,shippingDate);
+            preparedStatement.setString(7,deliveryDate);
+            preparedStatement.setString(8,currentStatus);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
 
         }catch(Exception expt){
             expt.printStackTrace();
@@ -212,7 +272,7 @@ public class DataHandler{
 
     //name,items,senderAddress, mailtype, shippingDate, deliveryDate, currentStatus
     public static String [] getPackageDetails(String packageID){
-        String [] packageDetails = {"","","","","","",""};
+        String [] packageDetails = {"","","","","","","",""};
 
         if(packageID.equals(""))
             return packageDetails;
@@ -228,6 +288,7 @@ public class DataHandler{
                 packageDetails[4] = packageInfo.getDate("shippingDate").toString();
                 packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
                 packageDetails[6] = packageInfo.getString("currentStatus");
+                packageDetails[7] = packageInfo.getString("deliveryAddress");
             }
 
             packageInfo.close();
@@ -243,9 +304,11 @@ public class DataHandler{
         if(packageID.equals(""))
             return;
         try{
-            String addPackage = "UPDATE Package SET user=\"" +username+ "\" WHERE id=" +packageID+ ";";
-            
-            statement.executeUpdate(addPackage);
+            PreparedStatement preparedStatement = connection.prepareStatement("CALL add_package_for_user(?,?)");
+            preparedStatement.setString(1,packageID);
+            preparedStatement.setString(2,username);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
 
         }catch(Exception expt){
             expt.printStackTrace();
