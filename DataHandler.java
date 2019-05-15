@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "209539352";
+            String password = "@Fcrt39jiv9";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -38,6 +38,8 @@ public class DataHandler{
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
+            
+            //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
             
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
