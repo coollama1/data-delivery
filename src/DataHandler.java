@@ -31,16 +31,28 @@ public class DataHandler{
             + "mailtype VARCHAR(128),"
             + "shippingDate DATE,"
             + "deliveryDate DATE,"
-            + "currentStatus VARCHAR(128),"
-            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE);"; 
+            + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE);";
+
+            String createHistoryTable = "CREATE TABLE IF NOT EXISTS History("
+            + "package_id INT PRIMARY KEY,"
+            + "status_id VARCHAR(128),"
+            + "delivered_date DATE),"
+            + "FOREIGN KEY (package_id) REFERENCES User(username);";
+
+            String createStatusTable = "CREATE TABLE IF NOT EXISTS Status("
+            + "id INT PRIMARY KEY,"
+            + "name VARHCHAR(128),"
+            + "FOREIGN KEY (id) REFERENCES User(username);";
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
+
             
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
             
+
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
             String alterPackageTable = "ALTER TABLE Package AUTO_INCREMENT=123456789;";
@@ -64,6 +76,8 @@ public class DataHandler{
             statement.executeUpdate(insertAdmin);
             statement.executeUpdate(insertSecondAdmin);
             statement.executeUpdate(createUserInfoView);
+            statement.executeUpdate(createHistoryTable);
+            statement.executeUpdate(createStatusTable);
 
             createProcedures();
 

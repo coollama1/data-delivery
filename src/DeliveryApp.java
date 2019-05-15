@@ -60,6 +60,7 @@ public class DeliveryApp extends Application{
         seventhScene = new SeventhScene();
     }
 
+    // Login page
     class FirstScene extends Scene{
         GridPane layout;
         Text sceneTitle;
@@ -133,7 +134,8 @@ public class DeliveryApp extends Application{
             layout.add(lBtn, 1, 4);
         }
     }
-    
+
+    // Main page
     class SecondScene extends Scene{
         GridPane layout;
         Button editPersonalInfoButton;
@@ -208,6 +210,7 @@ public class DeliveryApp extends Application{
         }
     }
 
+    // Edit personal info page
     class ThirdScene extends Scene{
         GridPane layout;
         Text changeInfoTitle;
@@ -274,6 +277,7 @@ public class DeliveryApp extends Application{
         }
     }
 
+    // Mail info
     class FourthScene extends Scene{
         GridPane layout;
         Label item;
@@ -361,6 +365,7 @@ public class DeliveryApp extends Application{
 
     }
 
+    // Enter tracking number to add package into user's list of mail/packages to view.
     class FifthScene extends Scene{
         GridPane layout;
         Text trackingTitle;
@@ -406,6 +411,7 @@ public class DeliveryApp extends Application{
         }
     }
 
+    // Sign up page
     class SixthScene extends Scene{
         GridPane layout;
         Text signUpTitle;
@@ -504,6 +510,7 @@ public class DeliveryApp extends Application{
         }
     }
 
+    // Admin page to create a package.
     class SeventhScene extends Scene{
     	GridPane layout;
     	Text title;
