@@ -52,8 +52,15 @@ public class DataHandler{
 
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
 
-            /*String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(integer packageid) RETURNS integer " +
-                    "deterministic SELECT status_id FROM history WHERE package_id = packageid;";*/
+            String createCurrentStatusFunction = "DELIMITER $$ " +
+                    "CREATE FUNCTION CurrentStatus(packageId int) " +
+                    "RETURNS INT DETERMINISTIC " +
+                    "BEGIN " +
+                    "DECLARE statusReturn INT; " +
+                    "SET @statusReturn = 0; " +
+                    "SELECT hist.status_id INTO @statusReturn FROM history hist WHERE package_id = packageId; " +
+                    "RETURN @statusReturn; " +
+                    "END $$";
 
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
@@ -83,7 +90,7 @@ public class DataHandler{
             statement.executeUpdate(createStatusTable);
             statement.executeUpdate(insertStatus);
             statement.executeUpdate(createHistoryTable);
-            //statement.executeUpdate(createCurrentStatusFunction);
+            statement.executeUpdate(createCurrentStatusFunction);
 
             createProcedures();
 
@@ -118,25 +125,34 @@ public class DataHandler{
             + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate) ";
 
             String createUpdateCurrentStatus = "CREATE PROCEDURE update_status "
-            + "(In inputPackageID int, In inputStatusID int) "
-            + "UPDATE history SET status_id=inputStatusID WHERE package_id=inputPackageID";
+            + "(In inputPackID int, In inputStatusID int) "
+            + "UPDATE history SET status_id=inputStatusID WHERE package_id=inputPackID";
+
+            String createAddHistory = "CREATE PROCEDURE add_history "
+            + "(In packingID int, In statusID int, In deliveredDate int) "
+            + "INSERT IGNORE INTO history(package_id,status_id) "
+            + "VALUE(packingID,statusID)";
 
             String dropNewUserProcedure = "DROP PROCEDURE IF EXISTS insert_user";
             String dropUpdateUserProcedure = "DROP PROCEDURE IF EXISTS update_user";
             String dropAddPackageProcedure = "DROP PROCEDURE IF EXISTS add_package_for_user";
             String dropInsertPackageProcedure = "DROP PROCEDURE IF EXISTS insert_package";
             String dropUpdateCurrentStatus = "DROP PROCEDURE IF EXISTS update_status";
+            String dropAddHistory = "DROP PROCEDURE IF EXISTS add_history";
 
             statement.executeUpdate(dropNewUserProcedure);
             statement.executeUpdate(dropUpdateUserProcedure);
             statement.executeUpdate(dropAddPackageProcedure);
             statement.executeUpdate(dropInsertPackageProcedure);
             statement.executeUpdate(dropUpdateCurrentStatus);
+            statement.executeUpdate(dropAddHistory);
             statement.executeUpdate(createNewUserProcedure);
             statement.executeUpdate(createUpdateUserProcedure);
             statement.executeUpdate(createAddPackageProcedure);
             statement.executeUpdate(createInsertPackageProcedure);
             statement.executeUpdate(createUpdateCurrentStatus);
+            statement.executeUpdate(createAddHistory);
+
         }catch(Exception expt){
             expt.printStackTrace();
         }
@@ -258,7 +274,6 @@ public class DataHandler{
             preparedStatement.setString(5,mailtype);
             preparedStatement.setString(6,shippingDate);
             preparedStatement.setString(7,deliveryDate);
-            //preparedStatement.setString(8,currentStatus);
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
