@@ -12,7 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-            String password = "@Fcrt39jiv9";
+            String password = "cody1234";
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -52,17 +52,16 @@ public class DataHandler{
 
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
 
-            String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT * FROM package INNER JOIN status ON package_.id = status.CurrentStatus;";
+            String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT package.id AS itemID, status.name AS status FROM package INNER JOIN status ON status.id = CurrentStatus(package.id);";
 
-            String createCurrentStatusFunction = "DELIMITER $$ " +
-                    "CREATE FUNCTION CurrentStatus(packageId int) " +
-                    "RETURNS INT DETERMINISTIC " +
-                    "BEGIN " +
-                    "DECLARE statusReturn INT; " +
-                    "SET @statusReturn = 0; " +
-                    "SELECT hist.status_id INTO @statusReturn FROM history hist WHERE package_id = packageId; " +
-                    "RETURN @statusReturn; " +
-                    "END $$";
+            String dropFunction = "DROP FUNCTION IF EXISTS CurrentStatus;";
+            
+            String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(packageid INT) "
+            									+ "RETURNS int DETERMINISTIC "
+            									+ "BEGIN "
+            									+ "DECLARE output INT; "
+            									+ "SELECT status_id INTO output FROM history WHERE package_id = packageid; RETURN output;"
+            									+ "END";
 
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
@@ -92,6 +91,7 @@ public class DataHandler{
             statement.executeUpdate(createStatusTable);
             statement.executeUpdate(insertStatus);
             statement.executeUpdate(createHistoryTable);
+            statement.executeUpdate(dropFunction);
             statement.executeUpdate(createCurrentStatusFunction);
             statement.executeUpdate(createPackageStatusView);
 
