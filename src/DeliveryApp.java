@@ -177,7 +177,10 @@ public class DeliveryApp extends Application{
             nameLabel.setFont(Font.font("Segoe UI",14));
             addressLabel.setFont(Font.font("Segoe UI",14));
 
-            editPersonalInfoButton.setOnAction(e -> window.setScene(thirdScene));
+            editPersonalInfoButton.setOnAction(e -> {
+            DataHandler.addressUpdate();
+            window.setScene(thirdScene);
+            });
             addPackageButton.setOnAction(e -> window.setScene(fifthScene));
             logoutButton.setOnAction(e -> window.setScene(firstScene));
 
@@ -562,7 +565,7 @@ public class DeliveryApp extends Application{
             deliveryDate = new Label("Delivery Date:");
             deliveryTextField = new TextField();
             statusLabel = new Label("Current Status:");
-            statusTextField = new TextField();
+            //statusTextField = new TextField();
             tracking = new Label("Tracking #:");
             trackingLabel = new Label(DataHandler.getNextPackageID());
             enterBtn = new Button("Enter");
@@ -589,8 +592,8 @@ public class DeliveryApp extends Application{
                 String mailtype = mailTextField.getText();
                 String shippingDate = shippingTextField.getText();
                 String deliveryDate = deliveryTextField.getText();
-                String currentStatus = (String) status.getValue();
-                DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus);
+                //String currentStatus = (String) status.getValue();
+                DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate);
                 clearTextFields();
             });
             
