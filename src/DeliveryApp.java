@@ -306,7 +306,6 @@ public class DeliveryApp extends Application{
             super(new GridPane(),350,350);
 
             String [] itemDetails = DataHandler.getPackageDetails(currentPackageID);
-
             layout = (GridPane)this.getRoot();
             item = new Label("Items:");
             sender = new Label("Sender:");
@@ -320,7 +319,7 @@ public class DeliveryApp extends Application{
             mailOutput = new Label(itemDetails[3]);
             shipOutput = new Label(itemDetails[4]);
             deliverOutput = new Label(itemDetails[5]);
-            currentOutput = new Label(itemDetails[6]);
+            currentOutput = new Label(DataHandler.getPackageStatus(currentPackageID));
             receiverOutput = new Label(itemDetails[7]);
 
             backBtn = new Button("Back");

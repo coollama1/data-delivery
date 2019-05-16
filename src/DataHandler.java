@@ -342,8 +342,8 @@ public class DataHandler{
                 packageDetails[3] = packageInfo.getString("mailType");
                 packageDetails[4] = packageInfo.getDate("shippingDate").toString();
                 packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
-                //packageDetails[6] = packageInfo.getString("currentStatus");
-                packageDetails[6] = packageInfo.getString("deliveryAddress");
+                packageDetails[6] = packageInfo.getString("currentStatus");
+                packageDetails[7] = packageInfo.getString("deliveryAddress");
             }
 
             packageInfo.close();
@@ -354,6 +354,20 @@ public class DataHandler{
         return packageDetails;
     }
 
+    public static String getPackageStatus(String packageID) {
+    	String curPackStatus = "";
+    	try{
+            String packageStatus = "SELECT status FROM Package_Status WHERE itemID = \"" +packageID+ "\";";
+            ResultSet currentStatus = statement.executeQuery(packageStatus);
+            if(currentStatus.next()) {
+            	curPackStatus = currentStatus.getString("status");
+            }
+            
+        }catch(Exception expt){
+            expt.printStackTrace();
+        }
+    	return curPackStatus;
+    }
     
     public static void addPackageForUser(String username, String packageID){
         if(packageID.equals(""))
