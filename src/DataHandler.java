@@ -49,7 +49,7 @@ public class DataHandler{
             + "password VARCHAR(128),"
             + "name VARCHAR(128));";
 
-            
+
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
 
             /*String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(integer packageid) RETURNS integer " +
@@ -113,9 +113,9 @@ public class DataHandler{
 
             String createInsertPackageProcedure = "CREATE PROCEDURE insert_package "
             + "(In inputItems char(128), In inputSender char(128), In inputUser char(128), In inputDeliveryAddress char(128),"
-            + "In inputMailtype char(128), In inputShippingDate char(128), In inputDeliveryDate char(128), In inputCurrentStatus char(128)) "
-            + "INSERT IGNORE INTO Package(items,sender,user,deliveryAddress,mailtype,shippingDate,deliveryDate,currentStatus) "
-            + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate,inputCurrentStatus) ";
+            + "In inputMailtype char(128), In inputShippingDate char(128), In inputDeliveryDate char(128)) "
+            + "INSERT IGNORE INTO Package(items,sender,user,deliveryAddress,mailtype,shippingDate,deliveryDate) "
+            + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate) ";
 
             String createUpdateCurrentStatus = "CREATE PROCEDURE update_status "
             + "(In inputPackageID int, In inputStatusID int) "
@@ -141,7 +141,16 @@ public class DataHandler{
             expt.printStackTrace();
         }
     }
-
+    public static void addressUpdate() {
+    	String removeTrigger = "DROP TRIGGER IF EXISTS addressUpdate;";
+    	String addressUpdate = "CREATE TRIGGER addressUpdate AFTER UPDATE ON User FOR EACH ROW UPDATE Package INNER JOIN User ON Package.user = User.username SET Package.deliveryAddress = User.address";
+        try{
+        	statement.executeUpdate(removeTrigger);
+        	statement.executeUpdate(addressUpdate);
+        }catch(Exception expt) {
+        	expt.printStackTrace();
+        }
+    }
     //reutrns [name,address] based on username inpuit
     public static String [] getPersonalInfo(String username){
             String [] personalInfo = {"",""};
@@ -238,10 +247,10 @@ public class DataHandler{
     }
 
     //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
-    public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
+    public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate){
         try{
             String deliveryAddress = getPersonalInfo(username)[1];
-            PreparedStatement preparedStatement = connection.prepareStatement("CALL insert_package(?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("CALL insert_package(?,?,?,?,?,?,?)");
             preparedStatement.setString(1,items);
             preparedStatement.setString(2,senderAddress);
             preparedStatement.setString(3,username);
@@ -249,7 +258,7 @@ public class DataHandler{
             preparedStatement.setString(5,mailtype);
             preparedStatement.setString(6,shippingDate);
             preparedStatement.setString(7,deliveryDate);
-            preparedStatement.setString(8,currentStatus);
+            //preparedStatement.setString(8,currentStatus);
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
@@ -315,8 +324,8 @@ public class DataHandler{
                 packageDetails[3] = packageInfo.getString("mailType");
                 packageDetails[4] = packageInfo.getDate("shippingDate").toString();
                 packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
-                packageDetails[6] = packageInfo.getString("currentStatus");
-                packageDetails[7] = packageInfo.getString("deliveryAddress");
+                //packageDetails[6] = packageInfo.getString("currentStatus");
+                packageDetails[6] = packageInfo.getString("deliveryAddress");
             }
 
             packageInfo.close();
