@@ -589,7 +589,7 @@ public class DeliveryApp extends Application{
                 String mailtype = mailTextField.getText();
                 String shippingDate = shippingTextField.getText();
                 String deliveryDate = deliveryTextField.getText();
-                String currentStatus = statusTextField.getText();
+                String currentStatus = (String) status.getValue();
                 DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus);
                 clearTextFields();
             });
@@ -626,7 +626,7 @@ public class DeliveryApp extends Application{
         	layout.add(deliveryDate, 0, 7);
         	layout.add(deliveryTextField,1,7);
         	layout.add(statusLabel, 0, 8);
-        	layout.add(statusTextField,1, 8);
+        	//layout.add(statusTextField,1, 8);
         	layout.add(tracking, 0, 9);
         	layout.add(trackingLabel, 1, 9);
         	layout.add(eBtn, 1, 10);
@@ -640,7 +640,7 @@ public class DeliveryApp extends Application{
             mailTextField.setText("");
             shippingTextField.setText("");
             deliveryTextField.setText("");
-            statusTextField.setText("");
+            //statusTextField.setText("");
             trackingLabel.setText(DataHandler.getNextPackageID());
         }
 

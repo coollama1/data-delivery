@@ -33,16 +33,16 @@ public class DataHandler{
             + "deliveryDate DATE,"
             + "FOREIGN KEY(user) REFERENCES User(username) ON DELETE CASCADE ON UPDATE CASCADE);";
 
-            String createHistoryTable = "CREATE TABLE IF NOT EXISTS History("
-            + "package_id INT PRIMARY KEY,"
-            + "status_id VARCHAR(128),"
-            + "delivered_date DATE),"
-            + "FOREIGN KEY (package_id) REFERENCES User(username),"
-            + "FOREIGN KEY (status_id) REFERENCES Status(id));";
-
-            String createStatusTable = "CREATE TABLE IF NOT EXISTS Status("
+            String createStatusTable = "CREATE TABLE IF NOT EXISTS status("
             + "id INT PRIMARY KEY,"
-            + "name VARHCHAR(128)";
+            + "name VARCHAR(128));";
+
+            String createHistoryTable = "CREATE TABLE IF NOT EXISTS history("
+            + "package_id INT PRIMARY KEY,"
+            + "status_id INT,"
+            + "delivered_date DATE,"
+            + "FOREIGN KEY (package_id) REFERENCES Package(id),"
+            + "FOREIGN KEY (status_id) REFERENCES status(id));";
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
@@ -78,9 +78,9 @@ public class DataHandler{
             statement.executeUpdate(insertAdmin);
             statement.executeUpdate(insertSecondAdmin);
             statement.executeUpdate(createUserInfoView);
-            statement.executeUpdate(createHistoryTable);
             statement.executeUpdate(createStatusTable);
             statement.executeUpdate(insertStatus);
+            statement.executeUpdate(createHistoryTable);
 
             createProcedures();
 
