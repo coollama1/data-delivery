@@ -52,6 +52,8 @@ public class DataHandler{
 
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
 
+            String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT * FROM package INNER JOIN status ON package_.id = status.CurrentStatus;";
+
             String createCurrentStatusFunction = "DELIMITER $$ " +
                     "CREATE FUNCTION CurrentStatus(packageId int) " +
                     "RETURNS INT DETERMINISTIC " +
@@ -91,6 +93,7 @@ public class DataHandler{
             statement.executeUpdate(insertStatus);
             statement.executeUpdate(createHistoryTable);
             statement.executeUpdate(createCurrentStatusFunction);
+            statement.executeUpdate(createPackageStatusView);
 
             createProcedures();
 
