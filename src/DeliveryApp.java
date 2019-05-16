@@ -1,4 +1,6 @@
 import javafx.application.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -306,7 +308,7 @@ public class DeliveryApp extends Application{
             item = new Label("Items:");
             sender = new Label("Sender:");
             receiver = new Label("Receiver:");
-            mailType = new Label("Mailtype:");
+            mailType = new Label("Mail Type:");
             shipDate = new Label("Shipping Date:");
             deliverDate = new Label("Delivery Date:");
             currentStatus = new Label("Current Status:");
@@ -527,14 +529,14 @@ public class DeliveryApp extends Application{
     	Label deliveryDate;
     	TextField deliveryTextField;
     	Label statusLabel;
-    	TextField statusTextField;
     	Label tracking;
     	Label trackingLabel;
     	Button enterBtn;
     	HBox eBtn;
     	Button cancelBtn;
     	HBox cBtn;
-    	
+    	ComboBox status;
+
         public SeventhScene(){
             super(new GridPane(),325,500);
             

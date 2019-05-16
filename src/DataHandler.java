@@ -37,12 +37,12 @@ public class DataHandler{
             + "package_id INT PRIMARY KEY,"
             + "status_id VARCHAR(128),"
             + "delivered_date DATE),"
-            + "FOREIGN KEY (package_id) REFERENCES User(username);";
+            + "FOREIGN KEY (package_id) REFERENCES User(username),"
+            + "FOREIGN KEY (status_id) REFERENCES Status(id));";
 
             String createStatusTable = "CREATE TABLE IF NOT EXISTS Status("
             + "id INT PRIMARY KEY,"
-            + "name VARHCHAR(128),"
-            + "FOREIGN KEY (id) REFERENCES User(username);";
+            + "name VARHCHAR(128)";
 
             String createAdminTable = "CREATE TABLE IF NOT EXISTS Admin("
             + "username VARCHAR(128) PRIMARY KEY NOT NULL,"
@@ -56,6 +56,8 @@ public class DataHandler{
             String insertAdmin = "INSERT IGNORE INTO Admin VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
             String insertSecondAdmin = "INSERT IGNORE INTO Admin VALUES(\"steinsgate\",\"database\", \"Dai\");";
 
+            String insertStatus = "INSERT IGNORE INTO Status(id,name) VALUE(\"0\",\"processing\"),(\"1\",\"shipping\")," +
+                    "(\"2\",\"outfordelivery\"),(\"3\",\"delivered\");";
 
             connection = DriverManager.getConnection(host,user,password);
             statement = connection.createStatement();
@@ -74,6 +76,7 @@ public class DataHandler{
             statement.executeUpdate(createUserInfoView);
             statement.executeUpdate(createHistoryTable);
             statement.executeUpdate(createStatusTable);
+            statement.executeUpdate(insertStatus);
 
             createProcedures();
 
