@@ -561,8 +561,11 @@ public class DeliveryApp extends Application{
             shippingTextField = new TextField();
             deliveryDate = new Label("Delivery Date:");
             deliveryTextField = new TextField();
+
             statusLabel = new Label("Current Status:");
-            statusTextField = new TextField();
+            String statuses[] = {"Processing","Shipping","Out for delivery","Delivered"};
+            status = new ComboBox(FXCollections.observableArrayList(statuses));
+
             tracking = new Label("Tracking #:");
             trackingLabel = new Label(DataHandler.getNextPackageID());
             enterBtn = new Button("Enter");
@@ -626,7 +629,7 @@ public class DeliveryApp extends Application{
         	layout.add(deliveryDate, 0, 7);
         	layout.add(deliveryTextField,1,7);
         	layout.add(statusLabel, 0, 8);
-        	//layout.add(statusTextField,1, 8);
+        	layout.add(status,1, 8);
         	layout.add(tracking, 0, 9);
         	layout.add(trackingLabel, 1, 9);
         	layout.add(eBtn, 1, 10);

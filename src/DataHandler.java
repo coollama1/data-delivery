@@ -51,7 +51,9 @@ public class DataHandler{
 
             
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
-            
+
+            /*String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(integer packageid) RETURNS integer " +
+                    "deterministic SELECT status_id FROM history WHERE package_id = packageid;";*/
 
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
 
@@ -81,6 +83,7 @@ public class DataHandler{
             statement.executeUpdate(createStatusTable);
             statement.executeUpdate(insertStatus);
             statement.executeUpdate(createHistoryTable);
+            statement.executeUpdate(createCurrentStatusFunction);
 
             createProcedures();
 
@@ -114,23 +117,29 @@ public class DataHandler{
             + "INSERT IGNORE INTO Package(items,sender,user,deliveryAddress,mailtype,shippingDate,deliveryDate,currentStatus) "
             + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate,inputCurrentStatus) ";
 
+            String createUpdateCurrentStatus = "CREATE PROCEDURE update_status "
+            + "(In inputPackageID int, In inputStatusID int)) "
+            + "UPDATE history SET status_id=inputStatusID WHERE package_id=inputPackageID";
+
             String dropNewUserProcedure = "DROP PROCEDURE IF EXISTS insert_user";
             String dropUpdateUserProcedure = "DROP PROCEDURE IF EXISTS update_user";
             String dropAddPackageProcedure = "DROP PROCEDURE IF EXISTS add_package_for_user";
             String dropInsertPackageProcedure = "DROP PROCEDURE IF EXISTS insert_package";
+            String dropUpdateCurrentStatus = "DROP PROCEDURE IF EXISTS update_status";
 
             statement.executeUpdate(dropNewUserProcedure);
             statement.executeUpdate(dropUpdateUserProcedure);
             statement.executeUpdate(dropAddPackageProcedure);
             statement.executeUpdate(dropInsertPackageProcedure);
+            statement.executeUpdate(dropUpdateCurrentStatus);
             statement.executeUpdate(createNewUserProcedure);
             statement.executeUpdate(createUpdateUserProcedure);
             statement.executeUpdate(createAddPackageProcedure);
             statement.executeUpdate(createInsertPackageProcedure);
+            statement.executeUpdate(createUpdateCurrentStatus);
         }catch(Exception expt){
             expt.printStackTrace();
         }
-
     }
 
     //reutrns [name,address] based on username inpuit
