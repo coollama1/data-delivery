@@ -523,6 +523,7 @@ public class DeliveryApp extends Application{
     	Label senderLabel;
     	TextField senderTextField;
     	Label mailLabel;
+    	Label mailInstruct;
     	TextField mailTextField;
     	Label shippingDate;
     	TextField shippingTextField;
@@ -538,7 +539,7 @@ public class DeliveryApp extends Application{
     	ComboBox status;
 
         public SeventhScene(){
-            super(new GridPane(),325,500);
+            super(new GridPane(),575,550);
             
             layout = (GridPane)this.getRoot();
             title = new Text("Add Package");
@@ -550,6 +551,12 @@ public class DeliveryApp extends Application{
             senderTextField = new TextField();
             mailLabel = new Label("Mail Type:");
             mailTextField = new TextField();
+            //Overnight -> 1 Day
+            //Express Shipping -> 1-2 Days
+            //First Class -> 1-3 Days
+            //Ground -> 2-8 Days
+            //Snail -> 9-14 Days
+            mailInstruct = new Label("Type \"Overnight\", \"Express\", \"FirstClass\",\n \"Ground\", or \"Snail\" as Mail Type.");
             shippingDate = new Label("Shipping Date:");
             shippingTextField = new TextField();
             deliveryDate = new Label("Delivery Date:");
@@ -568,6 +575,7 @@ public class DeliveryApp extends Application{
             itemLabel.setFont(Font.font("Segoe UI",14));
             senderLabel.setFont(Font.font("Segoe UI",14));
             mailLabel.setFont(Font.font("Segoe UI",14));
+            mailInstruct.setFont(Font.font("Segoe UI Bold",14));
             shippingDate.setFont(Font.font("Segoe UI",14));
             deliveryDate.setFont(Font.font("Segoe UI",14));
             statusLabel.setFont(Font.font("Segoe UI",14));
@@ -599,27 +607,28 @@ public class DeliveryApp extends Application{
         	cBtn.getChildren().add(cancelBtn);
         	
         	layout.setAlignment(Pos.BASELINE_CENTER);
-        	layout.setHgap(15);
+        	layout.setHgap(10);
         	layout.setVgap(20);
         	layout.setPadding(new Insets(25, 25, 25, 25));
         	
         	layout.add(title, 0, 0,2,1);
-        	layout.add(receivingUser, 0, 1);
-        	layout.add(receiverTextField,1,1);
-        	layout.add(itemLabel, 0, 2);
-        	layout.add(itemTextField,1,2);
-        	layout.add(senderLabel, 0, 3);
-        	layout.add(senderTextField,1,3);
-        	layout.add(mailLabel, 0, 4);
-        	layout.add(mailTextField,1,4);
-        	layout.add(shippingDate, 0, 5);
-        	layout.add(shippingTextField,1,5);
-        	layout.add(deliveryDate, 0, 6);
-        	layout.add(deliveryTextField,1,6);
-        	layout.add(statusLabel, 0, 7);
-        	layout.add(statusTextField,1,7);
-        	layout.add(tracking, 0, 8);
-        	layout.add(trackingLabel, 1, 8);
+        	layout.add(mailInstruct, 0, 1);
+        	layout.add(receivingUser, 0, 2);
+        	layout.add(receiverTextField,1,2);
+        	layout.add(itemLabel, 0, 3);
+        	layout.add(itemTextField,1,3);
+        	layout.add(senderLabel, 0, 4);
+        	layout.add(senderTextField,1,4);
+        	layout.add(mailLabel, 0, 5);
+        	layout.add(mailTextField,1,5);
+        	layout.add(shippingDate, 0, 6);
+        	layout.add(shippingTextField,1,6);
+        	layout.add(deliveryDate, 0, 7);
+        	layout.add(deliveryTextField,1,7);
+        	layout.add(statusLabel, 0, 8);
+        	layout.add(statusTextField,1, 8);
+        	layout.add(tracking, 0, 9);
+        	layout.add(trackingLabel, 1, 9);
         	layout.add(eBtn, 1, 10);
         	layout.add(cBtn, 0, 10);
         }
