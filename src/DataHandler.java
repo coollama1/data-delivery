@@ -83,7 +83,7 @@ public class DataHandler{
             statement.executeUpdate(createStatusTable);
             statement.executeUpdate(insertStatus);
             statement.executeUpdate(createHistoryTable);
-            statement.executeUpdate(createCurrentStatusFunction);
+            //statement.executeUpdate(createCurrentStatusFunction);
 
             createProcedures();
 
@@ -118,7 +118,7 @@ public class DataHandler{
             + "VALUES(inputItems,inputSender,inputUser,inputDeliveryAddress,inputMailtype,inputShippingDate,inputDeliveryDate,inputCurrentStatus) ";
 
             String createUpdateCurrentStatus = "CREATE PROCEDURE update_status "
-            + "(In inputPackageID int, In inputStatusID int)) "
+            + "(In inputPackageID int, In inputStatusID int) "
             + "UPDATE history SET status_id=inputStatusID WHERE package_id=inputPackageID";
 
             String dropNewUserProcedure = "DROP PROCEDURE IF EXISTS insert_user";
