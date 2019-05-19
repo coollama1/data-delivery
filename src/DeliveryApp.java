@@ -314,13 +314,13 @@ public class DeliveryApp extends Application{
             shipDate = new Label("Shipping Date:");
             deliverDate = new Label("Delivery Date:");
             currentStatus = new Label("Current Status:");
-            itemOutput = new Label(itemDetails[0]);
+            itemOutput = new Label(itemDetails[0]); //items,sender,deliveryAddress,mailtype,shippingDate, deliveryDate, currentStatus
             senderOutput = new Label(itemDetails[1]);
+            receiverOutput = new Label(itemDetails[2]);
             mailOutput = new Label(itemDetails[3]);
             shipOutput = new Label(itemDetails[4]);
             deliverOutput = new Label(itemDetails[5]);
             currentOutput = new Label(DataHandler.getPackageStatus(currentPackageID));
-            receiverOutput = new Label(itemDetails[7]);
 
             backBtn = new Button("Back");
             bBtn = new HBox(5);
@@ -594,8 +594,8 @@ public class DeliveryApp extends Application{
                 String mailtype = mailTextField.getText();
                 String shippingDate = shippingTextField.getText();
                 String deliveryDate = deliveryTextField.getText();
-                //String currentStatus = (String) status.getValue();
-                DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate);
+                String currentStatus = (String) status.getValue();
+                DataHandler.createNewPackage(items,sender,user,mailtype,shippingDate,deliveryDate,currentStatus);
                 clearTextFields();
             });
             

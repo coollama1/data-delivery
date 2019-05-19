@@ -12,11 +12,7 @@ public class DataHandler{
         try{
             String host = "jdbc:mysql://localhost:3306/";
             String user = "root";
-<<<<<<< HEAD
             String password = "209539352";
-=======
-            String password = "cody1234";
->>>>>>> 6339c76963bdf377be05e62f60b00c66c79cabca
             
             String createDatabase = "CREATE DATABASE IF NOT EXISTS Delivery;";
 
@@ -56,15 +52,32 @@ public class DataHandler{
 
             //String shippingCheck = "CREATE TRIGGER shippingCheck BEFORE INSERT ON Package";
 
-            String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT package.id AS itemID, status.name AS status FROM package INNER JOIN status ON status.id = CurrentStatus(package.id);";
+            //String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT Package.id AS itemID, status.name AS status FROM Package INNER JOIN status ON status.id = CurrentStatus(Package.id);";
+            String createPackageStatusView = "CREATE OR REPLACE VIEW Package_Status AS SELECT Package.id AS itemID, status.name AS status FROM (Package INNER JOIN history ON Package.id=history.package_id) INNER JOIN status ON status.id = history.status_id;";
 
             String dropFunction = "DROP FUNCTION IF EXISTS CurrentStatus;";
             
-            String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(packageid INT) "
-            									+ "RETURNS int DETERMINISTIC "
+//            String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(packageid INT) "
+//            									+ "RETURNS int DETERMINISTIC "
+//            									+ "BEGIN "
+//            									+ "DECLARE output INT; "
+//            									+ "SELECT status_id INTO output FROM history WHERE package_id = packageid; RETURN output;"
+//            									+ "END";
+
+            String createCurrentStatusFunction = "CREATE FUNCTION CurrentStatus(statusName VARCHAR(128)) "
+            									+ "RETURNS INT DETERMINISTIC "
             									+ "BEGIN "
             									+ "DECLARE output INT; "
-            									+ "SELECT status_id INTO output FROM history WHERE package_id = packageid; RETURN output;"
+            									+ "SELECT status.id INTO output FROM status WHERE statusName = status.name; RETURN output;"
+            									+ "END";
+
+            String dropCurrentStatusNameFunction = "DROP FUNCTION IF EXISTS CurrentStatusName;";
+
+            String createCurrentStatusNameFunction = "CREATE FUNCTION CurrentStatusName(packageid INT) "
+            									+ "RETURNS VARCHAR(128) DETERMINISTIC "
+            									+ "BEGIN "
+            									+ "DECLARE output INT; "
+            									+ "SELECT status.name INTO output FROM history INNER JOIN status ON status_id = status.id WHERE package_id = packageid; RETURN output;"
             									+ "END";
 
             String createUserInfoView = "CREATE OR REPLACE VIEW user_info AS SELECT username, name, address FROM User;";
@@ -74,7 +87,7 @@ public class DataHandler{
             String insertAdmin = "INSERT IGNORE INTO Admin VALUES(\"mestime\",\"database\", \"Marvin The Martian\");";
             String insertSecondAdmin = "INSERT IGNORE INTO Admin VALUES(\"steinsgate\",\"database\", \"Dai\");";
 
-            String insertStatus = "INSERT IGNORE INTO Status(id,name) VALUE(\"0\",\"processing\"),(\"1\",\"shipping\")," +
+            String insertStatus = "INSERT IGNORE INTO status(id,name) VALUE(\"0\",\"processing\"),(\"1\",\"shipping\")," +
                     "(\"2\",\"outfordelivery\"),(\"3\",\"delivered\");";
 
             connection = DriverManager.getConnection(host,user,password);
@@ -97,6 +110,8 @@ public class DataHandler{
             statement.executeUpdate(createHistoryTable);
             statement.executeUpdate(dropFunction);
             statement.executeUpdate(createCurrentStatusFunction);
+            statement.executeUpdate(dropCurrentStatusNameFunction);
+            statement.executeUpdate(createCurrentStatusNameFunction);
             statement.executeUpdate(createPackageStatusView);
 
             createProcedures();
@@ -135,10 +150,10 @@ public class DataHandler{
             + "(In inputPackID int, In inputStatusID int) "
             + "UPDATE history SET status_id=inputStatusID WHERE package_id=inputPackID";
 
-            String createAddHistory = "CREATE PROCEDURE add_history "
-            + "(In packingID int, In statusID int, In deliveredDate int) "
-            + "INSERT IGNORE INTO history(package_id,status_id) "
-            + "VALUE(packingID,statusID)";
+            String createAddHistory = "CREATE PROCEDURE add_history " 
+            + "(In packingID int, In statusID int, In deliveredDate VARCHAR(128)) "
+            + "INSERT IGNORE INTO history "
+            + "VALUE(packingID,statusID,deliveredDate)";
 
             String dropNewUserProcedure = "DROP PROCEDURE IF EXISTS insert_user";
             String dropUpdateUserProcedure = "DROP PROCEDURE IF EXISTS update_user";
@@ -270,9 +285,10 @@ public class DataHandler{
     }
 
     //input: name,items,senderAddress,username,mailtype,shippingDate,deliveryDate,currentStatus
-    public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate){
+    public static void createNewPackage(String items, String senderAddress, String username, String mailtype, String shippingDate, String deliveryDate, String currentStatus){
         try{
             String deliveryAddress = getPersonalInfo(username)[1];
+            int nextPackageID = Integer.parseInt(getNextPackageID());
             PreparedStatement preparedStatement = connection.prepareStatement("CALL insert_package(?,?,?,?,?,?,?)");
             preparedStatement.setString(1,items);
             preparedStatement.setString(2,senderAddress);
@@ -281,6 +297,11 @@ public class DataHandler{
             preparedStatement.setString(5,mailtype);
             preparedStatement.setString(6,shippingDate);
             preparedStatement.setString(7,deliveryDate);
+            preparedStatement.executeUpdate();
+            preparedStatement = connection.prepareStatement("CALL add_history(?,CurrentStatus(?),?)");
+            preparedStatement.setInt(1,nextPackageID);
+            preparedStatement.setString(2,currentStatus);
+            preparedStatement.setString(3,deliveryDate);
             preparedStatement.executeUpdate();
             preparedStatement.close();
 
@@ -329,25 +350,22 @@ public class DataHandler{
         return listOfPackageIDs;
     }
 
-    //name,items,senderAddress, mailtype, shippingDate, deliveryDate, currentStatus
+    //items,sender,deliveryAddress,mailtype,shippingDate, deliveryDate, currentStatus
     public static String [] getPackageDetails(String packageID){
-        String [] packageDetails = {"","","","","","","",""};
-
+        String [] packageDetails = {"","","","","",""};
         if(packageID.equals(""))
             return packageDetails;
         try{
-            String selectPackage = "SELECT * FROM Package WHERE id=" +packageID+ ";";
+            String selectPackage = "SELECT * FROM Package WHERE Package.id=" +packageID+ ";";
             ResultSet packageInfo = statement.executeQuery(selectPackage);
 
             if(packageInfo.next()){
                 packageDetails[0] = packageInfo.getString("items");
                 packageDetails[1] = packageInfo.getString("sender");
-                packageDetails[2] = packageInfo.getString("user");
+                packageDetails[2] = packageInfo.getString("deliveryAddress");
                 packageDetails[3] = packageInfo.getString("mailType");
                 packageDetails[4] = packageInfo.getDate("shippingDate").toString();
                 packageDetails[5] = packageInfo.getDate("deliveryDate").toString();
-                packageDetails[6] = packageInfo.getString("currentStatus");
-                packageDetails[7] = packageInfo.getString("deliveryAddress");
             }
 
             packageInfo.close();
